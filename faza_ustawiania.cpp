@@ -1,5 +1,9 @@
 #include <iostream>
 #include <string>
+// #TODO:
+// przeniesienie do klasy
+// mechanizm ustawiania
+// mechanizm usuwania
 void wypisz_plansze(char mapa[10][10]){
     std::cout<<("  ");
     for(int i = 0; i<10; i++){
