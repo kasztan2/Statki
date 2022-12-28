@@ -64,5 +64,5 @@ void inicjujKolory()
     init_pair(0, COLOR_WHITE, COLOR_BLACK);
     init_pair(KOLOR_MORZE, COLOR_BLACK, COLOR_BLUE);
     init_pair(KOLOR_STATEK, COLOR_GREEN, COLOR_BLACK);
-    init_pair(KOLOR_USTAWIANIE, COLOR_CYAN, COLOR_BLACK);
+    init_pair(KOLOR_USTAWIANIE, COLOR_RED, COLOR_BLACK);
 }
