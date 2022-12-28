@@ -46,10 +46,12 @@ class Bot1{
         string pole_strzal = wspolrzedneNaString(kolumna, wiersz);
         strzelic[wiersz][kolumna] = false;
         return pole_strzal;
+        //TODO: zapytanie o informacje o trafieniu po strzale i wywolanie funkcji decyzja
     }
     void decyzja(int kolumna, int wiersz){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
-        bool trafienie = false;
+        bool trafienie = false; 
         bool zatopienie = false;
+        //dwie linijki wyzej maja byc na podstawie informacji do funkcji gry, obecnie sa tylko w celu testu
         if(trafienie){
             bool czy_wczesniej_trafione_obok = false;
             for(auto para : kierunki){
