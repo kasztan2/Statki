@@ -1,8 +1,6 @@
 //faza ustawiania
 #include "plansza.h"
 
-using namespace std;
-
 //sprawdź czy otoczenie pola jest wolne (statki nie mogą się stykać)
 bool okOtoczeniePola(char plansza[][10], int x, int y)
 {
@@ -64,7 +62,7 @@ bool ustawStatek(char plansza[][10], int x, int y, bool kierunek, int rozmiar)
 
 void faza_ustawiania(char plansza[][10])
 {
-    vector<int> statki={1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
+    std::vector<int> statki={1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
     while(!statki.empty())
     {
         int rozmiar=statki.back();

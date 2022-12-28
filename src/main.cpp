@@ -1,7 +1,5 @@
 #include "plansza.h"
 
-using namespace std;
-
 char planszaU[10][10];
 
 int main()

@@ -3,9 +3,7 @@
 #include <curses.h>
 #include "plansza.h"
 
-using namespace std;
-
-void print(int x, int y, string str, int kolor=0)
+void print(int x, int y, std::string str, int kolor=0)
 {
     ++x;++y;
     const char *c=str.c_str();
@@ -22,7 +20,7 @@ void print(int x, int y, char znak, int kolor=0)
     attroff(COLOR_PAIR(kolor));
 }
 
-void print(int x, int y, string str)
+void print(int x, int y, std::string str)
 {
     print(x, y, str, 0);
 }

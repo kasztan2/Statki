@@ -7,11 +7,9 @@
 #define KOLOR_STATEK 2
 #define KOLOR_USTAWIANIE 3
 
-using namespace std;
-
-void print(int x, int y, string str, int kolor);
+void print(int x, int y, std::string str, int kolor);
 void print(int x, int y, char znak, int kolor);
-void print(int x, int y, string str);
+void print(int x, int y, std::string str);
 void print(int x, int y, char znak);
 void czyscPlansze(char plansza[][10]);
 void rysujPlansze(char plansza[][10]);
