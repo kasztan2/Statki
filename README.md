@@ -1,9 +1,9 @@
 # Gra w statki
 
 ## Instalacja
-Zainstaluj `ncurses`. Na Debianie/Ubuntu:
+Zainstaluj `ncurses` oraz coreutils. Na Debianie/Ubuntu:
 ```bash
-sudo apt install libncurses5-dev libncursesw5-dev
+sudo apt install libncurses5-dev libncursesw5-dev coreutils
 ```  
 [Instrukcje dla innych dystrybucji](https://www.cyberciti.biz/faq/linux-install-ncurses-library-headers-on-debian-ubuntu-centos-fedora)
   
