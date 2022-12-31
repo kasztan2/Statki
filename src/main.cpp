@@ -22,6 +22,10 @@ int main()
     refresh();
     sleep(2);//! do usunięcia, ~placeholder
 
-    //wróć kursorze!
+    //wróć kursorze i cała reszto!
+    echo();
+    nocbreak();
     curs_set(1);
+    system("stty sane");
+    printf("\n");
 }
