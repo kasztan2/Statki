@@ -1,7 +1,7 @@
 # Gra w statki
 
 ## Instalacja
-Zainstaluj `ncurses` oraz coreutils. Na Debianie/Ubuntu:
+Zainstaluj `ncurses` oraz `coreutils`. Na Debianie/Ubuntu:
 ```bash
 sudo apt install libncurses5-dev libncursesw5-dev coreutils
 ```  
