@@ -62,6 +62,14 @@ bool ustawStatek(char plansza[][10], int x, int y, bool kierunek, int rozmiar)
 
 void faza_ustawiania(char plansza[][10])
 {
+    print(25, 7, "Oznaczenia:");
+    print(25, 8, "  ", KOLOR_MORZE);
+    print(27, 8, " puste pole");
+    print(25, 9, "██", KOLOR_STATEK);
+    print(27, 9, " ustawiony statek");
+    print(25, 10, "██", KOLOR_USTAWIANIE);
+    print(27, 10, " statek w trakcie ustawiania");
+
     std::vector<int> statki={1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
     while(!statki.empty())
     {
@@ -128,4 +136,6 @@ void faza_ustawiania(char plansza[][10])
             }
         }
     }
+    //czyszczenie oznaczeń
+    for(int i=7; i<=11; ++i)print(25, i, "                                 ");
 }
