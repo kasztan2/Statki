@@ -12,6 +12,7 @@ class Bot1{
     bool trafiony[10][10];
     queue<pair<int, int>> kolejka_strzalow;
     pair<int, int> kierunki[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    pair<int, int> kierunki8[8] = {{1, 1}, {1, 0}, {1, -1}, {0, 1}, {0, -1}, {-1, 1}, {-1, 0}, {-1, -1}};
     bool poza_plansza(int y, int x){
         if(y >= 10 || y < 0 || x >= 10 || x < 0){
             return true;
@@ -30,7 +31,7 @@ class Bot1{
             }
         }
     }
-    string strzal(){
+    void strzal(){
         while(!strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
             kolejka_strzalow.pop();
         }
@@ -39,23 +40,29 @@ class Bot1{
             string miejsce_strzalu = wspolrzedneNaString(para_z_kolejki.first, para_z_kolejki.second);
             kolejka_strzalow.pop();
             strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
-            return miejsce_strzalu;
+            decyzja(para_z_kolejki.first, para_z_kolejki.second);
+            return;
         }
         int kolumna, wiersz;
         do{
             kolumna = rand()%10 + 65;
             wiersz = rand()%10;
         }while(!strzelic[wiersz][kolumna]);
-        string pole_strzal = wspolrzedneNaString(kolumna, wiersz);
         strzelic[wiersz][kolumna] = false;
-        return pole_strzal;
-        //TODO: zapytanie o informacje o trafieniu po strzale i wywolanie funkcji decyzja
-        // pomysl rozwiazania: 
-        // decyzja(werdykt(strzal())) gdzie werdykt to jakas funkcja gry ktora przyjmuje miejsce gdzie strzelic i zwraca miejsce strzalu i informacje pudlo/zatopiony/trafiony, a decyzja bierze te trzy informacje i podejmuje decyzje bota na ich podstawie
+        decyzja(kolumna, wiersz);
+        return;
     }
     void decyzja(int kolumna, int wiersz){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
+        // int werdykt = zapytaj_o_trafienie(kolumna, wiersz);
         bool trafienie = false; 
         bool zatopienie = false;
+        // if(werdykt == 1){
+        //     trafienie = true;
+        // }
+        // else if(werdykt == 2){
+        //     zatopienie = true;
+        // }
+
         //dwie linijki wyzej maja byc na podstawie informacji do funkcji gry, obecnie sa tylko w celu testu
         
         // zalozmy ze mamy czesc takiej planszy:
@@ -66,6 +73,7 @@ class Bot1{
         // sprawdzmy wiec najpierw czy dookola [kolumna-65][wiersz] jest jakis punkt ktory byl trafiony
         // jesli byl trafiony (jest to u nas punkt nad nami), to do kolejki chcemy dodac tylko punkt pod nami, bo punkt nad nami jest juz trafiony, a punkty na lewo i prawo na pewno nie beda miec statku, bo mialby wtedy ksztalt L 
         if(trafienie){
+            trafiony[kolumna-65][wiersz] = true;
             bool czy_wczesniej_trafione_obok = false;
             for(auto para : kierunki){
                 int x = kolumna-65+para.second;
@@ -103,8 +111,30 @@ class Bot1{
         }
         // jak nie trafimy to nie robimy nic
         if(zatopienie){
-            //TODO: bfs przechodzimy po trafieniach i dodajemy wszystkie wspolrzedne dookola trafien jako false w strzelic, aby bot nigdy wiecej do nich nie strzelil.
-            int pass;
+            //bfs przechodzimy po trafieniach i dodajemy wszystkie wspolrzedne dookola trafien jako false w strzelic, aby bot nigdy wiecej do nich nie strzelil.
+            queue<pair<int, int>> bfs;
+            bfs.push({kolumna-65, wiersz});
+            bool visited[10][10];
+            for(int i = 0; i<10; i++){
+                for(int j = 0; j<10; j++){
+                    visited[i][j] = false;
+                }
+            }
+            while(!bfs.empty()){
+                int y = bfs.front().first;
+                int x = bfs.front().second;
+                bfs.pop();
+                visited[y][x] = true;
+                for(auto para : kierunki8){
+                    if(poza_plansza(y+para.first, x+para.second)){
+                        continue;
+                    }
+                    strzelic[y+para.first][x+para.second] = false;
+                    if(trafiony[y+para.first][x+para.second] && !visited[y+para.first][x+para.first]){
+                        bfs.push({y+para.first, x+para.second});
+                    }
+                }
+            }
         }
 
     }
