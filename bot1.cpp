@@ -22,36 +22,6 @@ class Bot1{
     string wspolrzedneNaString(int kolumna, int wiersz){
         return char(kolumna) + to_string(wiersz);
     }
-    public: 
-    Bot1(){
-        srand(time(NULL));
-        for(int i = 0; i<10; i++){
-            for(int j = 0; j<10; j++){
-                strzelic[i][j] = true;
-            }
-        }
-    }
-    void strzal(){
-        while(!strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
-            kolejka_strzalow.pop();
-        }
-        if(!kolejka_strzalow.empty()){
-            pair<int, int> para_z_kolejki = kolejka_strzalow.front();
-            string miejsce_strzalu = wspolrzedneNaString(para_z_kolejki.first, para_z_kolejki.second);
-            kolejka_strzalow.pop();
-            strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
-            decyzja(para_z_kolejki.first, para_z_kolejki.second);
-            return;
-        }
-        int kolumna, wiersz;
-        do{
-            kolumna = rand()%10 + 65;
-            wiersz = rand()%10;
-        }while(!strzelic[wiersz][kolumna]);
-        strzelic[wiersz][kolumna] = false;
-        decyzja(kolumna, wiersz);
-        return;
-    }
     void decyzja(int kolumna, int wiersz){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
         // int werdykt = zapytaj_o_trafienie(kolumna, wiersz);
         bool trafienie = false; 
@@ -62,8 +32,6 @@ class Bot1{
         // else if(werdykt == 2){
         //     zatopienie = true;
         // }
-
-        //dwie linijki wyzej maja byc na podstawie informacji do funkcji gry, obecnie sa tylko w celu testu
         
         // zalozmy ze mamy czesc takiej planszy:
         // ...#...
@@ -137,6 +105,36 @@ class Bot1{
             }
         }
 
+    }
+    public: 
+    Bot1(){
+        srand(time(NULL));
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                strzelic[i][j] = true;
+            }
+        }
+    }
+    void strzal(){
+        while(!strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
+            kolejka_strzalow.pop();
+        }
+        if(!kolejka_strzalow.empty()){
+            pair<int, int> para_z_kolejki = kolejka_strzalow.front();
+            string miejsce_strzalu = wspolrzedneNaString(para_z_kolejki.first, para_z_kolejki.second);
+            kolejka_strzalow.pop();
+            strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
+            decyzja(para_z_kolejki.first, para_z_kolejki.second);
+            return;
+        }
+        int kolumna, wiersz;
+        do{
+            kolumna = rand()%10 + 65;
+            wiersz = rand()%10;
+        }while(!strzelic[wiersz][kolumna]);
+        strzelic[wiersz][kolumna] = false;
+        decyzja(kolumna, wiersz);
+        return;
     }
 };
 
