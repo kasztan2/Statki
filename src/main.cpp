@@ -1,4 +1,5 @@
 #include "plansza.h"
+#include "menu.h"
 
 char planszaU[10][10];
 
@@ -11,6 +12,9 @@ int main()
     cbreak();
     inicjujKolory();
     curs_set(0);
+
+    Menu menu(30, 120);
+    menu.init();
 
     //zainicjuj planszę i ją wyświetl
     czyscPlansze(planszaU);
