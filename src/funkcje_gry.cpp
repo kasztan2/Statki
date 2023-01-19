@@ -25,10 +25,10 @@ int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
     bool gracz1 = true; 
     bool gracz2 = true;
     for(int i = 0; i<4; i++){
-        if(ilosc_statkow1[0] > 0){
+        if(ilosc_statkow1[i] > 0){
             gracz1 = false;
         }
-        if(ilosc_statkow2[0] > 0){
+        if(ilosc_statkow2[i] > 0){
             gracz2 = false;
         }
     }
@@ -67,6 +67,7 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
         }
         ilosc_statkow[byl_jakis_obok_trafiony+1]--;
         poprzednie_strzaly[kolumna][wiersz] = true;
+        return 2;
 
     }
     else{
