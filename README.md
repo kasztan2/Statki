@@ -17,11 +17,10 @@ Teraz odpal plik `statki`.
 
 
 ### MacOS
-Potrzebny jest gcc (aby `#include <bits/stdc++.h>` działał). Bazowo na macOS jest zainstalowany Clang, więc trzeba doinstalować `gcc` za pomocą komendy 
+Potrzebny jest `gcc` (aby `#include <bits/stdc++.h>` działał). Bazowo na macOS jest zainstalowany Clang, więc trzeba doinstalować `gcc` za pomocą komendy 
 ```
 brew install gcc
 ```
-Nastepnie w pliku Makefile zmień g++ na "/opt/homebrew/bin/g++-12"   
 
 Następnie zbuduj program komendą
 ```bash
