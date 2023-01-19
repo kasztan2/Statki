@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 
-#define MAG_BLACK 4
-#define CYAN_BLACK 5
-#define BLUE_BLACK 6
+#define MAG_BLACK 7
+#define CYAN_BLACK 8
+#define BLUE_BLACK 9
 #define K_ENTER 10
 
 enum Section {
