@@ -2,6 +2,7 @@
 #include <string>
 #include <queue>
 #include <random>
+#include "funkcje_gry.h"
 using std::string, std::cout, std::queue, std::to_string, std::pair;
 
 class Bot1{
@@ -22,17 +23,16 @@ class Bot1{
     string wspolrzedneNaString(int kolumna, int wiersz){
         return char(kolumna) + to_string(wiersz);
     }
-    void decyzja(int kolumna, int wiersz){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
-        // int werdykt = zapytaj_o_trafienie(kolumna, wiersz);
+    void decyzja(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
         bool trafienie = false; 
         bool zatopienie = false;
-        // if(werdykt == 1){
-        //     trafienie = true;
-        // }
-        // else if(werdykt == 2){
-        //     zatopienie = true;
-        // }
-        
+        int werdykt = strzal_w_pole(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
+        if(werdykt == 1){
+            trafienie = true;
+        }
+        else if(werdykt == 2){
+            zatopienie = true;
+        }
         // zalozmy ze mamy czesc takiej planszy:
         // ...#...
         // ...#...
@@ -115,7 +115,7 @@ class Bot1{
             }
         }
     }
-    void strzal(){
+    void strzal(char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4]){
         while(!strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
             kolejka_strzalow.pop();
         }
@@ -124,7 +124,7 @@ class Bot1{
             string miejsce_strzalu = wspolrzedneNaString(para_z_kolejki.first, para_z_kolejki.second);
             kolejka_strzalow.pop();
             strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
-            decyzja(para_z_kolejki.first, para_z_kolejki.second);
+            decyzja(para_z_kolejki.first, para_z_kolejki.second, plansza, poprzednie_strzaly, ilosc_statkow);
             return;
         }
         int kolumna, wiersz;
@@ -133,12 +133,8 @@ class Bot1{
             wiersz = rand()%10;
         }while(!strzelic[wiersz][kolumna]);
         strzelic[wiersz][kolumna] = false;
-        decyzja(kolumna, wiersz);
+        decyzja(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
         return;
     }
 };
 
-
-int main(){
-    Bot1 test;
-}
