@@ -10,21 +10,32 @@
 #define BLUE_BLACK 6
 #define K_ENTER 10
 
+enum Section {
+    menu,
+    new_game,
+    instructions,
+    end
+};
+
 class Menu {
     WINDOW* _menu;
-    std::vector<std::string> _options = { "Nowa gra", "Opcje", "Instrukcje", "Wyjscie" };
+    std::vector<std::string> _menu_options = { "Nowa gra", "Instrukcje", "Wyjscie" };
+    std::vector<std::string> _new_game_options = { "Bot 1", "Bot 2", "Bot 3", "Wroc do menu" };
+    std::vector<std::string> _instruction_options = { "Wroc do menu" };
     int _selected_option;
-    bool _exit;
-    bool _new_game;
+    int _prev_selected_option;
+    Section _curr_section;
+
+    int get_size();
 
 public:
     Menu(int height, int width);
     ~Menu();
     void update();
-    void init();
+    void init(const std::vector<std::string>& options);
     void init_colors();
     void clear();
-    void print_menu();
+    void print_menu(const std::vector<std::string>& options);
     void move_up();
     void move_down();
     void get_move();
@@ -32,10 +43,10 @@ public:
     void print_selected_option(const std::string& option, int y, int x);
     void section_exit();
     void section_return();
-    void section_options();
     void section_new_game();
     void section_instructions();
     void print_ship();
+    void start();
 };
 
 #endif //_MENU_H_

@@ -14,7 +14,7 @@ int main()
     curs_set(0);
 
     Menu menu(30, 120);
-    menu.init();
+    menu.start();
 
     //zainicjuj planszę i ją wyświetl
     czyscPlansze(planszaU);
