@@ -56,11 +56,57 @@ void rysujPlansze(char plansza[][10])
     }
 }
 
+void rysujPlanszePrzeciwnika(bool udane_strzaly[][10], bool nieudane_strzaly[][10])
+{
+    for(int i=0; i<10; ++i)
+    {
+        for(int j=0; j<10; ++j)
+        {
+            if(udane_strzaly[i][j])
+            {
+                print(25+2*i, j+1, "██", KOLOR_TRAFIONY);
+            }
+            else if(nieudane_strzaly[i][j])
+            {
+                print(25+2*i, j+1, "██", KOLOR_PUDLO);
+            }
+            else
+            {
+                print(25+2*i, j+1, "  ", KOLOR_MORZE);
+            }
+        }
+    }
+}
+
+void rysujTrafieniaBota(int strzaly[][10])
+{
+    for(int i=0; i<10; ++i)
+    {
+        for(int j=0; j<10; ++j)
+        {
+            if(strzaly[i][j]==1)
+            {
+                print(2*i, j+1, "██", KOLOR_TRAFIONY);
+            }
+            else if(strzaly[i][j]==2)
+            {
+                print(2*i, j+1, "██", KOLOR_PUDLO);
+            }
+            else
+            {
+                //print(2*i, j+1, "██", KOLOR_STATEK);
+            }
+        }
+    }
+}
+
 void inicjujKolory()
 {
     start_color();
     init_pair(0, COLOR_WHITE, COLOR_BLACK);
     init_pair(KOLOR_MORZE, COLOR_BLACK, COLOR_BLUE);
     init_pair(KOLOR_STATEK, COLOR_GREEN, COLOR_BLACK);
-    init_pair(KOLOR_USTAWIANIE, COLOR_RED, COLOR_BLACK);
+    init_pair(KOLOR_USTAWIANIE, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(KOLOR_TRAFIONY, COLOR_RED, COLOR_RED);
+    init_pair(KOLOR_PUDLO, COLOR_YELLOW, COLOR_YELLOW);
 }

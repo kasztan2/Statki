@@ -3,6 +3,7 @@
 #include <queue>
 #include <random>
 #include "funkcje_gry.h"
+#include "plansza.h"
 using std::string, std::cout, std::queue, std::to_string, std::pair;
 
 class Bot1{
@@ -23,16 +24,20 @@ class Bot1{
     string wspolrzedneNaString(int kolumna, int wiersz){
         return char(kolumna) + to_string(wiersz);
     }
-    void decyzja(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
+    void decyzja(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
+        print(0, 0, std::to_string(kolumna)+", "+std::to_string(wiersz));
         bool trafienie = false; 
         bool zatopienie = false;
         int werdykt = strzal_w_pole(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
         if(werdykt == 1){
+            trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=1;
             trafienie = true;
         }
         else if(werdykt == 2){
+            trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=1;
             zatopienie = true;
         }
+        else trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=2;
         // zalozmy ze mamy czesc takiej planszy:
         // ...#...
         // ...#...
@@ -115,7 +120,7 @@ class Bot1{
             }
         }
     }
-    void strzal(char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4]){
+    void strzal(char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){
         while(!strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
             kolejka_strzalow.pop();
         }
@@ -124,7 +129,7 @@ class Bot1{
             string miejsce_strzalu = wspolrzedneNaString(para_z_kolejki.first, para_z_kolejki.second);
             kolejka_strzalow.pop();
             strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
-            decyzja(para_z_kolejki.first, para_z_kolejki.second, plansza, poprzednie_strzaly, ilosc_statkow);
+            decyzja(para_z_kolejki.first, para_z_kolejki.second, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
             return;
         }
         int kolumna, wiersz;
@@ -133,7 +138,7 @@ class Bot1{
             wiersz = rand()%10;
         }while(!strzelic[wiersz][kolumna]);
         strzelic[wiersz][kolumna] = false;
-        decyzja(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
+        decyzja(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
         return;
     }
 };
