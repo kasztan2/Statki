@@ -30,26 +30,26 @@ class Bot1{
         bool zatopienie = false;
         int werdykt = strzal_w_pole(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
         if(werdykt == 1){
-            trafienia_wczesniejsze_do_rysowania[kolumna-0][wiersz]=1;
+            trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=1;
             trafienie = true;
         }
         else if(werdykt == 2){
-            trafienia_wczesniejsze_do_rysowania[kolumna-0][wiersz]=1;
+            trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=1;
             zatopienie = true;
         }
-        else trafienia_wczesniejsze_do_rysowania[kolumna-0][wiersz]=2;
+        else trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=2;
         // zalozmy ze mamy czesc takiej planszy:
         // ...#...
         // ...#...
         // ...#...
         // niech kolumna i wiersz wskazuja na hash srodkowy i zalozmy ze w hash najwyzej juz trafilismy w jakims strzale wczesniej
-        // sprawdzmy wiec najpierw czy dookola [kolumna-0][wiersz] jest jakis punkt ktory byl trafiony
+        // sprawdzmy wiec najpierw czy dookola [kolumna][wiersz] jest jakis punkt ktory byl trafiony
         // jesli byl trafiony (jest to u nas punkt nad nami), to do kolejki chcemy dodac tylko punkt pod nami, bo punkt nad nami jest juz trafiony, a punkty na lewo i prawo na pewno nie beda miec statku, bo mialby wtedy ksztalt L 
         if(trafienie){
-            trafiony[kolumna-0][wiersz] = true;
+            trafiony[kolumna][wiersz] = true;
             bool czy_wczesniej_trafione_obok = false;
             for(auto para : kierunki){
-                int x = kolumna-0+para.second;
+                int x = kolumna+para.second;
                 int y = wiersz+para.first;
                 if(!poza_plansza(y, x) && trafiony[y][x]){
                     czy_wczesniej_trafione_obok = true;
@@ -61,13 +61,13 @@ class Bot1{
                             if(para2.first == 0){ //naszym celem jest usuniecie statkow ktore stworza L (skoro byl trafiony np. punkt pod nami, to na pewno nie chcemy strzelic w punkt ktory jest po prawej i lewej od tego pod nami, bo wtedy statek by mial ksztalt L). wiec jesli para.first != 0 to znaczy ze poszlo y w gore o 1 lub dol, wiec nasza para2.first musi byc rowna 0 zeby nie isc y gora dol tylko x.
                             // jesli dodamy tylko strzelic = false, to przy funkcji strzal() wyjmie nam z kolejki ten punkt jesli jest falszywy (1szy if w funkcji strzal())
                                 strzelic[y][x+para2.second] = false;
-                                strzelic[wiersz][kolumna-0+para2.second] = false; //zaznaczmy od razu kolo obecnego trafienia
+                                strzelic[wiersz][kolumna+para2.second] = false; //zaznaczmy od razu kolo obecnego trafienia
                             }       
                         }
                         else{
                             if(para2.first != 0){
                                 strzelic[y+para2.first][x] = false;
-                                strzelic[wiersz+para2.first][kolumna-0] = false; //zaznaczmy od razu kolo obecnego trafienia
+                                strzelic[wiersz+para2.first][kolumna] = false; //zaznaczmy od razu kolo obecnego trafienia
                             }
                         }
                     }
@@ -76,8 +76,8 @@ class Bot1{
             }
             if(!czy_wczesniej_trafione_obok){ //jesli w nic dookola nie trafilismy i teraz trafilismy to statek moze kontynuoowac w dowolna strone
                 for(auto para : kierunki){
-                    if(!poza_plansza(wiersz+para.second, kolumna-0+para.first)){
-                        kolejka_strzalow.push({wiersz+para.second, kolumna-0+para.first});
+                    if(!poza_plansza(wiersz+para.second, kolumna+para.first)){
+                        kolejka_strzalow.push({wiersz+para.second, kolumna+para.first});
                     }
                 }
             }
@@ -86,7 +86,7 @@ class Bot1{
         if(zatopienie){
             //bfs przechodzimy po trafieniach i dodajemy wszystkie wspolrzedne dookola trafien jako false w strzelic, aby bot nigdy wiecej do nich nie strzelil.
             queue<pair<int, int>> bfs;
-            bfs.push({kolumna-0, wiersz});
+            bfs.push({kolumna, wiersz});
             bool visited[10][10];
             for(int i = 0; i<10; i++){
                 for(int j = 0; j<10; j++){

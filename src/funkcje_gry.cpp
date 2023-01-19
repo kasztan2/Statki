@@ -53,7 +53,7 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
     if(plansza[kolumna][wiersz] == '#'){
         if(plansza==plansza2)poprzednie_udane_strzaly1[kolumna][wiersz]=true;
         queue<pair<int, int>> q;
-        q.push({kolumna+0, wiersz});
+        q.push({kolumna, wiersz});
         bool visited[10][10];
         memset(visited, 0, sizeof(visited));
         int byl_jakis_obok_trafiony = 0;
@@ -68,13 +68,13 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
                     byl_jakis_obok_trafiony++;
                 }
                 if(plansza[kol+u.first][wier+u.second] == '#' && !poprzednie_strzaly[kol+u.first][wier+u.second]){
-                    poprzednie_strzaly[kolumna+0][wiersz] = true;
+                    poprzednie_strzaly[kolumna][wiersz] = true;
                     return 1; // jest trafienie, a obok stoi dalej jakis statek ktory nie zostal zatopiony
                 }
             }
         }
         ilosc_statkow[byl_jakis_obok_trafiony+1]--;
-        poprzednie_strzaly[kolumna+0][wiersz] = true;
+        poprzednie_strzaly[kolumna][wiersz] = true;
         return 2;
 
     }
