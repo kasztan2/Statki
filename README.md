@@ -9,7 +9,8 @@ sudo apt install libncurses5-dev libncursesw5-dev coreutils
 
 MacOS:
 Potrzebny jest gcc (aby #include <bits/stdc++.h> działał). Bazowo na macOS jest zainstalowany Clang, wiec trzeba doinstalowac gcc za pomocą komendy 
-```brew install gcc
+```
+brew install gcc
 ```
 Nastepnie w pliku Makefile zmień g++ na "/opt/homebrew/bin/g++-12"   
 
