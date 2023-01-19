@@ -1,4 +1,5 @@
 #include "plansza.h"
+#include "menu.h"
 #include "funkcje_gry.h"
 
 int main()
@@ -10,8 +11,10 @@ int main()
     cbreak();
     inicjujKolory();
     curs_set(0);
+
+    Menu menu(30, 120);
+    menu.start();
     
-    //TODO tu będzie menu, kiedyś...
     start_gry();
 
     //wróć kursorze i cała reszto!
