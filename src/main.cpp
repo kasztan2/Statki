@@ -1,6 +1,5 @@
 #include "plansza.h"
-
-char planszaU[10][10];
+#include "funkcje_gry.h"
 
 int main()
 {
@@ -11,16 +10,9 @@ int main()
     cbreak();
     inicjujKolory();
     curs_set(0);
-
-    //zainicjuj planszę i ją wyświetl
-    czyscPlansze(planszaU);
-    rysujPlansze(planszaU);
-
-    //faza ustawiania
-    faza_ustawiania(planszaU);
-    rysujPlansze(planszaU);
-    refresh();
-    sleep(2);//! do usunięcia, ~placeholder
+    
+    //TODO tu będzie menu, kiedyś...
+    start_gry();
 
     //wróć kursorze i cała reszto!
     echo();

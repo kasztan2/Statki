@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <queue>
@@ -137,8 +138,3 @@ class Bot1{
         return;
     }
 };
-
-
-int main(){
-    Bot1 test;
-}

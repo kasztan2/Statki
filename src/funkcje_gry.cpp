@@ -2,7 +2,7 @@
 #include <queue>
 #include <random>
 #include "plansza.h"
-#include "bot1.cpp"
+#include "bot1.h"
 using std::queue, std::pair, std::vector, std::cout, std::cin, std::string, std::swap;
 
 bool poprzednie_strzaly1[10][10];
@@ -196,7 +196,16 @@ void start_gry(){
     int gracz_startujacy = kto_zaczyna_gre() + 1;
     Bot1 gracz2;
     losuj_plansze_bota(plansza2);
-    //TODO: rozpoczecie fazy ustawiania w tym miejscu
+
+    //zainicjuj planszę i ją wyświetl
+    czyscPlansze(plansza1);
+    rysujPlansze(plansza1);
+
+    //faza ustawiania
+    faza_ustawiania(plansza1);
+    rysujPlansze(plansza1);
+    refresh();
+
     if(gracz_startujacy == 1){
         cout << "Zaczynasz gre. Wpisz pole w ktore chcesz strzelic\n";
     }
