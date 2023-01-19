@@ -93,6 +93,99 @@ void wczytaj_plansze_gracza(){
     int pass; // TODO aby wczytac plansze ktora ustawi gracz do zmiennej plansza1
 }
 
+bool mozna_ustawic(bool zajete[][10], int y, int x, int wielkosc, bool pion){
+    if(pion){
+        int starti = -1;
+        int maxi = 1;
+        if(x == 9){
+            maxi = 0;
+        }
+        if(x == 0){
+            starti = 0;
+        }
+        int startj = -1;
+        int maxj = wielkosc + 1; 
+        if(y == 0){
+            startj = 0;
+        }
+        if(y == 9){
+            maxj = wielkosc;
+        }
+        // chcemy sprawdzic caly prostokat 3x(wielkosc+2) dookola statku czy nie stoja dookola tych pol inne statki (lacznie z rogami wiec +2), jesli mamy sytuacje ze statek stoi przy skraju mapy to nie chcemy wyjsc poza mape
+        for(int i = starti; i<=maxi; i++){
+            for(int j = startj; j<maxj; j++){
+                if(zajete[y+j][x+i]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    else{
+        int starti = -1;
+        int maxi = wielkosc+1;
+        if(x == 9){
+            maxi = wielkosc - 1;
+        }
+        if(x == 0){
+            starti = 0;
+        }
+        int startj = -1;
+        int maxj = 1; 
+        if(y == 0){
+            startj = 0;
+        }
+        if(y == 9){
+            maxj = 0;
+        }
+        // chcemy sprawdzic caly prostokat 3x(wielkosc+2) dookola statku czy nie stoja dookola tych pol inne statki (lacznie z rogami wiec +2), jesli mamy sytuacje ze statek stoi przy skraju mapy to nie chcemy wyjsc poza mape
+        for(int i = starti; i<=maxi; i++){
+            for(int j = startj; j<maxj; j++){
+                if(zajete[y+j][x+i]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+void losuj_plansze_bota(char plansza2[][10]){
+    srand(time(NULL));
+    bool zajete[10][10];
+    memset(zajete, false, sizeof(zajete));
+    vector<int> wielkosci = {1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
+    while(!wielkosci.empty()){
+        cout << wielkosci.size() << "\n";
+        int wielkosc_statku = wielkosci.back();
+        wielkosci.pop_back();
+        bool pion = (rand()%2); // 0 poziom 1 pion
+        if(pion){
+            int y, x;
+            do{
+                y = rand()%(10-wielkosc_statku);
+                x = rand()%(10-wielkosc_statku);
+            }while(mozna_ustawic(zajete, y, x, wielkosc_statku, pion));
+            for(int i = 0; i<wielkosc_statku; i++){
+                zajete[y+i][x] = true;
+                plansza2[y+i][x] = '#';
+            }
+
+        }
+        else{
+            int y, x;
+            do{
+                y = rand()%(10-wielkosc_statku);
+                x = rand()%(10-wielkosc_statku);
+            }while(mozna_ustawic(zajete, y, x, wielkosc_statku, pion));
+            for(int i = 0; i<wielkosc_statku; i++){
+                zajete[y][x+i] = true;
+                plansza2[y][x+i] = '#';
+            }
+        }
+    }
+}
+
 void start_gry(){
     int gracz_startujacy = kto_zaczyna_gre() + 1;
     Bot1 gracz2;
@@ -116,4 +209,14 @@ void start_gry(){
     }
 
 
+}
+
+int main(){
+    losuj_plansze_bota(plansza2);
+    for(int i = 0; i<10; i++){
+        for(int j = 0; j<10; j++){
+            cout << plansza2[i][j];
+        }
+        cout << "\n";
+    }
 }
