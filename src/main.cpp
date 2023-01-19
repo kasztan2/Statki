@@ -1,7 +1,6 @@
 #include "plansza.h"
 #include "menu.h"
-
-char planszaU[10][10];
+#include "funkcje_gry.h"
 
 int main()
 {
@@ -15,16 +14,8 @@ int main()
 
     Menu menu(30, 120);
     menu.start();
-
-    //zainicjuj planszę i ją wyświetl
-    czyscPlansze(planszaU);
-    rysujPlansze(planszaU);
-
-    //faza ustawiania
-    faza_ustawiania(planszaU);
-    rysujPlansze(planszaU);
-    refresh();
-    sleep(2);//! do usunięcia, ~placeholder
+    
+    start_gry();
 
     //wróć kursorze i cała reszto!
     echo();
