@@ -76,17 +76,38 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
 }
 
 pair<int, int> zapytaj_o_strzal(){
-    
-    string pole;
-    do{
-        cin >> pole;
-    }while((int(pole[0]) > 90 || int(pole[0] > 57) && int(pole[0]) < 65 || int(pole[0]) < 48) || (int(pole[1]) > 90 || int(pole[1] > 57) && int(pole[1]) < 65 || int(pole[1]) < 48));
-    
-    if( int(pole[1]) >= 65 && int(pole[1]) <= 90 ){
-        swap(pole[0], pole[1]);
+    int k, x=0, y=0;
+    print(25+2*x, y+1, "██", KOLOR_USTAWIANIE);
+    while(1)
+    {
+        k=getch();
+        if(k>='A'&&k<='D')print(25+2*x, y+1, "  ");
+        if(k=='A')//do góry
+        {
+            if(y>0)--y;
+        }
+        else if(k=='B')//do dołu
+        {
+            if(y<9)++y;
+        }
+        else if(k=='D')//w lewo
+        {
+            if(x>0)--x;
+        }
+        else if(k=='C')//w prawo
+        {
+            if(x<9)++x;
+        }
+        else if(k==' ')//zaakceptuj
+        {
+            //TODO sprawdzenie, czy użytkownik nie strzela w pole, w które już strzelił
+            break;
+        }
+        print(25+2*x, y+1, "██", KOLOR_USTAWIANIE);
     }
-    int kolumna = int(pole[0])-65;
-    int wiersz = int(pole[1])-48;
+    print(25+2*x, y+1, "  ");
+    int kolumna=x, wiersz=y;
+    //print(0, 0, std::to_string(rand()));
     return {kolumna, wiersz};
 }
 
@@ -206,22 +227,34 @@ void start_gry(){
     rysujPlansze(plansza1);
     refresh();
 
-    if(gracz_startujacy == 1){
-        cout << "Zaczynasz gre. Wpisz pole w ktore chcesz strzelic\n";
+    if(gracz_startujacy == 1 || 0==0){
+        //cout << "Zaczynasz gre. Wpisz pole w ktore chcesz strzelic\n";
+        //print(0, 0, "Zaczynasz gre");
+        //sleep(3000);
+        print(0, 0, "Wybierz pole w ktore chcesz strzelic");
     }
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
         if(gracz_startujacy == 1){
             pair<int, int> strzal1 = zapytaj_o_strzal();
             strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
-            gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1); 
+            gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1);
+        }
+        else
+        {
+            gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1);
+            pair<int, int> strzal1 = zapytaj_o_strzal();
+            strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
         }
     }
+    print(0, 0, "Gra zakończona!");
     int przegrany = koniec_gry(ilosc_statkow1, ilosc_statkow2);
     if(przegrany == 1){
-        cout << "Przegrałeś!\n";
+        //cout << "Przegrałeś!\n";
+        print(0, 0, "Przegrałeś!");
     }
     else{
-        cout << "Wygrałeś!\n";
+        //cout << "Wygrałeś!\n";
+        print(0, 0, "Wygrałeś!");
     }
 
 
