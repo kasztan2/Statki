@@ -30,14 +30,14 @@ class Bot1{
         bool zatopienie = false;
         int werdykt = strzal_w_pole(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
         if(werdykt == 1){
-            trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=1;
+            trafienia_wczesniejsze_do_rysowania[kolumna-65][wiersz]=1;
             trafienie = true;
         }
         else if(werdykt == 2){
-            trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=1;
+            trafienia_wczesniejsze_do_rysowania[kolumna-65][wiersz]=1;
             zatopienie = true;
         }
-        else trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=2;
+        else trafienia_wczesniejsze_do_rysowania[kolumna-65][wiersz]=2;
         // zalozmy ze mamy czesc takiej planszy:
         // ...#...
         // ...#...
