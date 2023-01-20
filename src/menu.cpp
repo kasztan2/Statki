@@ -152,6 +152,7 @@ void Menu::select_option()
 
     case 1:
         if (_curr_section == menu) {
+            _curr_section=instructions;
             section_instructions();
         } else if (_curr_section == new_game) {
             _curr_section = end;
