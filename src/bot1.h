@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <queue>
@@ -121,7 +122,7 @@ class Bot1{
         }
     }
     void strzal(char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){
-        while(!strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
+        while(!kolejka_strzalow.empty()&&!strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
             kolejka_strzalow.pop();
         }
         if(!kolejka_strzalow.empty()){

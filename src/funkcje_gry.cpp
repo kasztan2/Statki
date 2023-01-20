@@ -3,6 +3,7 @@
 #include <random>
 #include "plansza.h"
 #include "bot1.h"
+#include "menu.h"
 using std::queue, std::pair, std::vector, std::cout, std::cin, std::string, std::swap;
 
 bool poprzednie_strzaly1[10][10];
@@ -49,9 +50,12 @@ int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
 }
 
 int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4]){
-    if(kolumna>60)kolumna-=0;
+    //if(kolumna>60)kolumna-=0;
+    print(0, 0, "strzal_w_pole");
     if(plansza[kolumna][wiersz] == '#'){
+        print(0, 0, "trafienie");
         if(plansza==plansza2)poprzednie_udane_strzaly1[kolumna][wiersz]=true;
+        print(0, 0, "def");
         queue<pair<int, int>> q;
         q.push({kolumna, wiersz});
         bool visited[10][10];
@@ -79,6 +83,7 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
 
     }
     else{
+        print(0, 0, "pudlo");
         if(plansza==plansza2)poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
         return 0;
     }
@@ -226,7 +231,14 @@ void losuj_plansze_bota(char plansza2[][10]){
 
 void start_gry(){
     int gracz_startujacy = kto_zaczyna_gre() + 1;
+    //std::variant<Bot1, string> gracz2;
+    //TO BE vector<std::variant<Bot1, Bot2, Bot3>> gracz2;
+    //Bot1 bot1;
+    //Bot2 bot2;
+    //Bot3 bot3;
+    //gracz2=bot1;
     Bot1 gracz2;
+
     losuj_plansze_bota(plansza2);
 
     //zainicjuj planszę i ją wyświetl
@@ -241,13 +253,14 @@ void start_gry(){
     if(gracz_startujacy == 1 || 0==0){
         //cout << "Zaczynasz gre. Wpisz pole w ktore chcesz strzelic\n";
         //print(0, 0, "Zaczynasz gre");
-        //sleep(3000);
-        print(0, 0, "Wybierz pole w ktore chcesz strzelic");
+        //sleep(3);
+        print(0, 0, "Wybierz pole w ktore chcesz strzelić");
     }
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
         if(gracz_startujacy == 1){
             pair<int, int> strzal1 = zapytaj_o_strzal();
             strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
+
             gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
             rysujTrafieniaBota(rysowanie_strzalow_bota);
         }

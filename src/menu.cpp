@@ -1,4 +1,5 @@
 #include "menu.h"
+//#include "funkcje_gry.h"
 #include <fstream>
 
 Menu::Menu(int height, int width)

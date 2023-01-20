@@ -120,3 +120,12 @@ void inicjujKolory()
     init_pair(KOLOR_TRAFIONY, COLOR_RED, COLOR_RED);
     init_pair(KOLOR_PUDLO, COLOR_YELLOW, COLOR_YELLOW);
 }
+
+
+//! TEMP
+void debug(std::string s)
+{
+    print(0, 0, s, 0);
+    refresh();
+}
+//! KONIEC TEMP
