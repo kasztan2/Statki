@@ -116,6 +116,7 @@ class Bot1{
                 int x = bfs.front().second;
                 debug(std::to_string(x)+", "+std::to_string(y));
                 bfs.pop();
+                if(visited[y][x])continue;
                 visited[y][x] = true;
                 for(auto para : kierunki8){
                     if(poza_plansza(y+para.first, x+para.second)){
