@@ -5,7 +5,7 @@
 #include <random>
 #include "funkcje_gry.h"
 #include "plansza.h"
-using std::string, std::cout, std::queue, std::to_string, std::pair;
+using std::string, std::cout, std::queue, std::to_string, std::pair, std::vector;
 
 class Bot1{
     private:
@@ -13,6 +13,7 @@ class Bot1{
     char puste_pole = ' ';
     bool strzelic[10][10];
     bool trafiony[10][10];
+    vector<pair<int, int>> pola_do_strzalow;
     queue<pair<int, int>> kolejka_strzalow;
     pair<int, int> kierunki[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     pair<int, int> kierunki8[8] = {{1, 1}, {1, 0}, {1, -1}, {0, 1}, {0, -1}, {-1, 1}, {-1, 0}, {-1, -1}};
@@ -26,8 +27,6 @@ class Bot1{
         return to_string(kolumna) + to_string(wiersz);
     }
     void decyzja(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
-        print(0, 15, "           "+std::to_string(kolumna)+", "+std::to_string(wiersz)+"     ");
-        refresh();
         bool trafienie = false; 
         bool zatopienie = false;
         int werdykt = strzal_w_pole(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
@@ -120,6 +119,8 @@ class Bot1{
         for(int i = 0; i<10; i++){
             for(int j = 0; j<10; j++){
                 strzelic[i][j] = true;
+                pair<int, int> para = {i, j};
+                pola_do_strzalow.push_back(para);
             }
         }
     }
@@ -132,17 +133,22 @@ class Bot1{
             string miejsce_strzalu = wspolrzedneNaString(para_z_kolejki.first, para_z_kolejki.second);
             kolejka_strzalow.pop();
             strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
+            int znajdz_id = 0;
+            for(int i = 0; i<pola_do_strzalow.size(); i++){
+                if(pola_do_strzalow[i] == para_z_kolejki){
+                    znajdz_id = i;
+                    break;
+                }
+            }
+            pola_do_strzalow.erase(pola_do_strzalow.begin()+znajdz_id);
             decyzja(para_z_kolejki.first, para_z_kolejki.second, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
             return;
         }
-        int kolumna, wiersz;
-        do{
-            kolumna = rand()%10;
-            wiersz = rand()%10;
-            debug(to_string(kolumna));//? wizualizacja nieskończonej pętli
-        }while(!strzelic[wiersz][kolumna]);//! TU JEST BŁĄD, leci w nieskończoność ten while
-        strzelic[wiersz][kolumna] = false;
-        decyzja(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
+        int pole_strzal_id = (rand()%int(pola_do_strzalow.size()));
+        pair<int, int> wartosc = pola_do_strzalow[pole_strzal_id];
+        strzelic[wartosc.first][wartosc.second] = false;
+        pola_do_strzalow.erase(pola_do_strzalow.begin()+pole_strzal_id);
+        decyzja(wartosc.second, wartosc.first, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
         return;
     }
 };
