@@ -12,8 +12,8 @@ int main()
     inicjujKolory();
     curs_set(0);
 
-    //Menu menu(30, 120);
-    //menu.start();
+    Menu menu(30, 120);
+    menu.start();
     
     start_gry();
 
