@@ -206,6 +206,8 @@ void Menu::section_return()
 void Menu::section_exit()
 {
     _curr_section = end;
+    sprzatanie_przy_wyjsciu();
+    exit(0);
 }
 
 void Menu::section_new_game()

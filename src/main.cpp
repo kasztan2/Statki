@@ -17,10 +17,5 @@ int main()
     
     start_gry();
 
-    //wróć kursorze i cała reszto!
-    echo();
-    nocbreak();
-    curs_set(1);
-    system("stty sane");
-    printf("\n");
+    sprzatanie_przy_wyjsciu();
 }

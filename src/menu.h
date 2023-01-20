@@ -4,6 +4,7 @@
 #include <curses.h>
 #include <string>
 #include <vector>
+#include "plansza.h"
 
 #define MAG_BLACK 7
 #define CYAN_BLACK 8
@@ -19,9 +20,9 @@ enum Section {
 
 class Menu {
     WINDOW* _menu;
-    std::vector<std::string> _menu_options = { "Nowa gra", "Instrukcje", "Wyjscie" };
-    std::vector<std::string> _new_game_options = { "Bot 1", "Bot 2", "Bot 3", "Wroc do menu" };
-    std::vector<std::string> _instruction_options = { "Wroc do menu" };
+    std::vector<std::string> _menu_options = { "Nowa gra", "Instrukcje", "Wyjście" };
+    std::vector<std::string> _new_game_options = { "Bot 1", "Bot 2", "Bot 3", "Wróć do menu" };
+    std::vector<std::string> _instruction_options = { "Wróć do menu" };
     int _selected_option;
     int _prev_selected_option;
     Section _curr_section;

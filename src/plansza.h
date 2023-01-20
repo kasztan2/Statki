@@ -19,3 +19,4 @@ void inicjujKolory();
 void faza_ustawiania(char plansza[][10]);
 void rysujPlanszePrzeciwnika(bool udane_strzaly[][10], bool nieudane_strzaly[][10]);
 void rysujTrafieniaBota(int strzaly[][10]);
+void sprzatanie_przy_wyjsciu();
