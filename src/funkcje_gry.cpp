@@ -258,9 +258,9 @@ void start_gry(){
     }
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
         if(gracz_startujacy == 1){
+            
             pair<int, int> strzal1 = zapytaj_o_strzal();
             strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
-
             gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
             rysujTrafieniaBota(rysowanie_strzalow_bota);
         }

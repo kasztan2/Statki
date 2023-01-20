@@ -23,28 +23,23 @@ class Bot1{
         return false;
     }
     string wspolrzedneNaString(int kolumna, int wiersz){
-        return char(kolumna) + to_string(wiersz);
+        return to_string(kolumna) + to_string(wiersz);
     }
     void decyzja(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
         print(0, 15, "           "+std::to_string(kolumna)+", "+std::to_string(wiersz)+"     ");
         refresh();
         bool trafienie = false; 
         bool zatopienie = false;
-        debug("aaa");
         int werdykt = strzal_w_pole(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
-        debug("bbb");
         if(werdykt == 1){
-            debug("a1");
             trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=1;
             trafienie = true;
         }
         else if(werdykt == 2){
-            debug("a2");
             trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=1;
             zatopienie = true;
         }
         else trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=2;
-        debug("bcb");
         // zalozmy ze mamy czesc takiej planszy:
         // ...#...
         // ...#...
@@ -53,45 +48,35 @@ class Bot1{
         // sprawdzmy wiec najpierw czy dookola [kolumna][wiersz] jest jakis punkt ktory byl trafiony
         // jesli byl trafiony (jest to u nas punkt nad nami), to do kolejki chcemy dodac tylko punkt pod nami, bo punkt nad nami jest juz trafiony, a punkty na lewo i prawo na pewno nie beda miec statku, bo mialby wtedy ksztalt L 
         if(trafienie){
-            debug("trafienie");
             trafiony[kolumna][wiersz] = true;
             bool czy_wczesniej_trafione_obok = false;
             for(auto para : kierunki){
                 int x = kolumna+para.second;
                 int y = wiersz+para.first;
-                debug("ccc");
                 if(!poza_plansza(y, x) && trafiony[y][x]){
                     czy_wczesniej_trafione_obok = true;
-                    debug("ddd");
                     if(!poza_plansza(y-2*para.first, x-2*para.second) && strzelic[y-2*para.first][x-2*para.second]){
-                        debug("eee");
                         kolejka_strzalow.push({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
                     }
-                    debug("fff");
                     for(auto para2 : kierunki){
-                        debug("ggg");
                         if(para.first != 0){
                             if(para2.first == 0){ //naszym celem jest usuniecie statkow ktore stworza L (skoro byl trafiony np. punkt pod nami, to na pewno nie chcemy strzelic w punkt ktory jest po prawej i lewej od tego pod nami, bo wtedy statek by mial ksztalt L). wiec jesli para.first != 0 to znaczy ze poszlo y w gore o 1 lub dol, wiec nasza para2.first musi byc rowna 0 zeby nie isc y gora dol tylko x.
                             // jesli dodamy tylko strzelic = false, to przy funkcji strzal() wyjmie nam z kolejki ten punkt jesli jest falszywy (1szy if w funkcji strzal())
-                                debug("111");
                                 strzelic[y][x+para2.second] = false;
                                 strzelic[wiersz][kolumna+para2.second] = false; //zaznaczmy od razu kolo obecnego trafienia
                             }       
                         }
                         else{
                             if(para2.first != 0){
-                                debug("222");
                                 strzelic[y+para2.first][x] = false;
                                 strzelic[wiersz+para2.first][kolumna] = false; //zaznaczmy od razu kolo obecnego trafienia
                             }
                         }
-                        debug("333");
                     }
                     break; //wiemy ze punkt np nad nami byl juz trafiony, wiec jedyny punkt ktory musimy dodac to ten pod nami ktory juz dodalismy wiec mozemy przerwac petle
                 }
             }
             if(!czy_wczesniej_trafione_obok){ //jesli w nic dookola nie trafilismy i teraz trafilismy to statek moze kontynuoowac w dowolna strone
-                debug("nie");
                 for(auto para : kierunki){
                     if(!poza_plansza(wiersz+para.second, kolumna+para.first)){
                         kolejka_strzalow.push({wiersz+para.second, kolumna+para.first});
@@ -102,7 +87,6 @@ class Bot1{
         // jak nie trafimy to nie robimy nic
         if(zatopienie){
             //bfs przechodzimy po trafieniach i dodajemy wszystkie wspolrzedne dookola trafien jako false w strzelic, aby bot nigdy wiecej do nich nie strzelil.
-            debug("zatopiony");
             queue<pair<int, int>> bfs;
             bfs.push({kolumna, wiersz});
             bool visited[10][10];
@@ -114,7 +98,6 @@ class Bot1{
             while(!bfs.empty()){
                 int y = bfs.front().first;
                 int x = bfs.front().second;
-                debug(std::to_string(x)+", "+std::to_string(y));
                 bfs.pop();
                 if(visited[y][x])continue;
                 visited[y][x] = true;
@@ -150,17 +133,16 @@ class Bot1{
             kolejka_strzalow.pop();
             strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
             decyzja(para_z_kolejki.first, para_z_kolejki.second, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
-            debug("ale jak");
             return;
         }
         int kolumna, wiersz;
         do{
-            kolumna = rand()%10 + 0;
+            kolumna = rand()%10;
             wiersz = rand()%10;
-        }while(!strzelic[wiersz][kolumna]);
+            debug(to_string(kolumna));//? wizualizacja nieskończonej pętli
+        }while(!strzelic[wiersz][kolumna]);//! TU JEST BŁĄD, leci w nieskończoność ten while
         strzelic[wiersz][kolumna] = false;
         decyzja(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
-        debug("co");
         return;
     }
 };
