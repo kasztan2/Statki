@@ -46,15 +46,15 @@ class Bot1{
         // jesli byl trafiony (jest to u nas punkt nad nami), to do kolejki chcemy dodac tylko punkt pod nami, bo punkt nad nami jest juz trafiony, a punkty na lewo i prawo na pewno nie beda miec statku, bo mialby wtedy ksztalt L 
         if(trafienie){
             trafiony[wiersz][kolumna] = true;
-            bool czy_wczesniej_trafione_obok = false;
-            for(auto para : kierunki){
-                int x = kolumna+para.second;
-                int y = wiersz+para.first;
-                if(!poza_plansza(y, x) && trafiony[y][x]){
-                    czy_wczesniej_trafione_obok = true;
-                    if(!poza_plansza(y-2*para.first, x-2*para.second) && moge_strzelic[y-2*para.first][x-2*para.second]){
-                        kolejka_strzalow.push_front({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
-                    }
+            // bool czy_wczesniej_trafione_obok = false;
+            // for(auto para : kierunki){
+            //     int x = kolumna+para.second;
+            //     int y = wiersz+para.first;
+                // if(!poza_plansza(y, x) && trafiony[y][x]){
+                //     czy_wczesniej_trafione_obok = true;
+                //     if(!poza_plansza(y-2*para.first, x-2*para.second) && moge_strzelic[y-2*para.first][x-2*para.second]){
+                //         kolejka_strzalow.push_front({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
+                //     }
                     //.....
                     //.TX#.
                     //.....
@@ -78,15 +78,15 @@ class Bot1{
                     //     }
                     // }
                     // break; //wiemy ze punkt np nad nami byl juz trafiony, wiec jedyny punkt ktory musimy dodac to ten pod nami ktory juz dodalismy wiec mozemy przerwac petle
-                }
-            }
-            if(!czy_wczesniej_trafione_obok){ //jesli w nic dookola nie trafilismy i teraz trafilismy to statek moze kontynuoowac w dowolna strone
-                for(auto para : kierunki){
-                    if(!poza_plansza(wiersz+para.second, kolumna+para.first)){
-                        kolejka_strzalow.push_front({wiersz+para.second, kolumna+para.first});
-                    }
-                }
-            }
+            //     }
+            // }
+            // if(!czy_wczesniej_trafione_obok){ //jesli w nic dookola nie trafilismy i teraz trafilismy to statek moze kontynuoowac w dowolna strone
+            //     for(auto para : kierunki){
+            //         if(!poza_plansza(wiersz+para.second, kolumna+para.first)){
+            //             kolejka_strzalow.push_front({wiersz+para.second, kolumna+para.first});
+            //         }
+            //     }
+            // }
         }
         // jak nie trafimy to nie robimy nic
         if(zatopienie){
