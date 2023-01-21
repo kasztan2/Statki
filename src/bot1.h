@@ -23,7 +23,8 @@ class Bot1{
         }
         return false;
     }
-    void decyzja(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
+    void decyzja(int wiersz, int kolumna, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
+        moge_strzelic[wiersz][kolumna] = false;
         bool trafienie = false; 
         bool zatopienie = false;
         int werdykt = strzal_w_pole(kolumna, wiersz, plansza, poprzednie_strzaly, ilosc_statkow);
@@ -109,7 +110,13 @@ class Bot1{
                 }
             }
         }
-
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                print(j, 11+i, moge_strzelic[i][j]?'1':'0');
+            }
+        }
+// nie dziala to ze nie moze byc L statek
+// nie dziala zaznaczanie pol dookola jak zatopiony
     }
     public: 
     Bot1(){
