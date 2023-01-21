@@ -5,16 +5,16 @@
 #include <random>
 #include "funkcje_gry.h"
 #include "plansza.h"
-using std::string, std::cout, std::queue, std::to_string, std::pair, std::vector;
+using std::string, std::cout, std::deque, std::to_string, std::pair, std::vector, std::queue;
 
 class Bot1{
     private:
     char statek = '#';
     char puste_pole = ' ';
-    bool strzelic[10][10];
+    bool moge_strzelic[10][10];
     bool trafiony[10][10];
     vector<pair<int, int>> pola_do_strzalow;
-    queue<pair<int, int>> kolejka_strzalow;
+    deque<pair<int, int>> kolejka_strzalow;
     pair<int, int> kierunki[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     pair<int, int> kierunki8[8] = {{1, 1}, {1, 0}, {1, -1}, {0, 1}, {0, -1}, {-1, 1}, {-1, 0}, {-1, -1}};
     bool poza_plansza(int y, int x){
@@ -22,9 +22,6 @@ class Bot1{
             return true;
         }
         return false;
-    }
-    string wspolrzedneNaString(int kolumna, int wiersz){
-        return to_string(kolumna) + to_string(wiersz);
     }
     void decyzja(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
         bool trafienie = false; 
@@ -54,21 +51,21 @@ class Bot1{
                 int y = wiersz+para.first;
                 if(!poza_plansza(y, x) && trafiony[y][x]){
                     czy_wczesniej_trafione_obok = true;
-                    if(!poza_plansza(y-2*para.first, x-2*para.second) && strzelic[y-2*para.first][x-2*para.second]){
-                        kolejka_strzalow.push({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
+                    if(!poza_plansza(y-2*para.first, x-2*para.second) && moge_strzelic[y-2*para.first][x-2*para.second]){
+                        kolejka_strzalow.push_front({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
                     }
                     for(auto para2 : kierunki){
                         if(para.first != 0){
-                            if(para2.first == 0){ //naszym celem jest usuniecie statkow ktore stworza L (skoro byl trafiony np. punkt pod nami, to na pewno nie chcemy strzelic w punkt ktory jest po prawej i lewej od tego pod nami, bo wtedy statek by mial ksztalt L). wiec jesli para.first != 0 to znaczy ze poszlo y w gore o 1 lub dol, wiec nasza para2.first musi byc rowna 0 zeby nie isc y gora dol tylko x.
-                            // jesli dodamy tylko strzelic = false, to przy funkcji strzal() wyjmie nam z kolejki ten punkt jesli jest falszywy (1szy if w funkcji strzal())
-                                strzelic[y][x+para2.second] = false;
-                                strzelic[wiersz][kolumna+para2.second] = false; //zaznaczmy od razu kolo obecnego trafienia
+                            if(para2.first == 0){ //naszym celem jest usuniecie statkow ktore stworza L (skoro byl trafiony np. punkt pod nami, to na pewno nie chcemy moge_strzelic w punkt ktory jest po prawej i lewej od tego pod nami, bo wtedy statek by mial ksztalt L). wiec jesli para.first != 0 to znaczy ze poszlo y w gore o 1 lub dol, wiec nasza para2.first musi byc rowna 0 zeby nie isc y gora dol tylko x.
+                            // jesli dodamy tylko moge_strzelic = false, to przy funkcji strzal() wyjmie nam z kolejki ten punkt jesli jest falszywy (1szy if w funkcji strzal())
+                                moge_strzelic[y][x+para2.second] = false;
+                                moge_strzelic[wiersz][kolumna+para2.second] = false; //zaznaczmy od razu kolo obecnego trafienia
                             }       
                         }
                         else{
                             if(para2.first != 0){
-                                strzelic[y+para2.first][x] = false;
-                                strzelic[wiersz+para2.first][kolumna] = false; //zaznaczmy od razu kolo obecnego trafienia
+                                moge_strzelic[y+para2.first][x] = false;
+                                moge_strzelic[wiersz+para2.first][kolumna] = false; //zaznaczmy od razu kolo obecnego trafienia
                             }
                         }
                     }
@@ -78,14 +75,14 @@ class Bot1{
             if(!czy_wczesniej_trafione_obok){ //jesli w nic dookola nie trafilismy i teraz trafilismy to statek moze kontynuoowac w dowolna strone
                 for(auto para : kierunki){
                     if(!poza_plansza(wiersz+para.second, kolumna+para.first)){
-                        kolejka_strzalow.push({wiersz+para.second, kolumna+para.first});
+                        kolejka_strzalow.push_front({wiersz+para.second, kolumna+para.first});
                     }
                 }
             }
         }
         // jak nie trafimy to nie robimy nic
         if(zatopienie){
-            //bfs przechodzimy po trafieniach i dodajemy wszystkie wspolrzedne dookola trafien jako false w strzelic, aby bot nigdy wiecej do nich nie strzelil.
+            //bfs przechodzimy po trafieniach i dodajemy wszystkie wspolrzedne dookola trafien jako false w moge_strzelic, aby bot nigdy wiecej do nich nie strzelil.
             queue<pair<int, int>> bfs;
             bfs.push({kolumna, wiersz});
             bool visited[10][10];
@@ -98,13 +95,14 @@ class Bot1{
                 int y = bfs.front().first;
                 int x = bfs.front().second;
                 bfs.pop();
+                moge_strzelic[y][x] = false;
                 if(visited[y][x])continue;
                 visited[y][x] = true;
                 for(auto para : kierunki8){
                     if(poza_plansza(y+para.first, x+para.second)){
                         continue;
                     }
-                    strzelic[y+para.first][x+para.second] = false;
+                    moge_strzelic[y+para.first][x+para.second] = false;
                     if(trafiony[y+para.first][x+para.second] && !visited[y+para.first][x+para.first]){
                         bfs.push({y+para.first, x+para.second});
                     }
@@ -118,37 +116,31 @@ class Bot1{
         srand(time(NULL));
         for(int i = 0; i<10; i++){
             for(int j = 0; j<10; j++){
-                strzelic[i][j] = true;
+                moge_strzelic[i][j] = true;
                 pair<int, int> para = {i, j};
                 pola_do_strzalow.push_back(para);
             }
         }
+        std::random_shuffle(pola_do_strzalow.begin(), pola_do_strzalow.end());
+        while(!pola_do_strzalow.empty()){
+            kolejka_strzalow.push_back(pola_do_strzalow.back());
+            pola_do_strzalow.pop_back();
+        }
+        pola_do_strzalow.shrink_to_fit();
     }
     void strzal(char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){
-        while(!kolejka_strzalow.empty()&&!strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
-            kolejka_strzalow.pop();
+        while(!kolejka_strzalow.empty() && !moge_strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
+            kolejka_strzalow.pop_front();
         }
         if(!kolejka_strzalow.empty()){
             pair<int, int> para_z_kolejki = kolejka_strzalow.front();
-            string miejsce_strzalu = wspolrzedneNaString(para_z_kolejki.first, para_z_kolejki.second);
-            kolejka_strzalow.pop();
-            strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
-            int znajdz_id = 0;
-            for(int i = 0; i<pola_do_strzalow.size(); i++){
-                if(pola_do_strzalow[i] == para_z_kolejki){
-                    znajdz_id = i;
-                    break;
-                }
-            }
-            pola_do_strzalow.erase(pola_do_strzalow.begin()+znajdz_id);
+            kolejka_strzalow.pop_front();
+            moge_strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
             decyzja(para_z_kolejki.first, para_z_kolejki.second, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
             return;
         }
-        int pole_strzal_id = (rand()%int(pola_do_strzalow.size()));
-        pair<int, int> wartosc = pola_do_strzalow[pole_strzal_id];
-        strzelic[wartosc.first][wartosc.second] = false;
-        pola_do_strzalow.erase(pola_do_strzalow.begin()+pole_strzal_id);
-        decyzja(wartosc.second, wartosc.first, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
+        //nigdy nie powinien dojsc do tego miejsca, bo to bedzie znaczyc ze kolejka jest pusta, czyli strzelil w kazde mozliwe pole, wiec gra powinna byc juz zakonczona.
+        cout << "blad\n";
         return;
     }
 };
