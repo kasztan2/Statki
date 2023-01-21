@@ -63,11 +63,12 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
         int byl_jakis_obok_trafiony = 0;
         while(!q.empty()){
             pair<int, int> para = q.front();
+            visited[para.first][para.second] = true;
             q.pop();
             int kol = para.first;
             int wier = para.second;
             for(auto u : kierunki){
-                if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second]){
+                if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second] && !visited[kol+u.first][wier+u.second]){
                     q.push({kol+u.first, wier+u.second});
                     byl_jakis_obok_trafiony++;
                 }
