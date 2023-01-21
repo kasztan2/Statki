@@ -37,6 +37,8 @@ class Bot1{
             zatopienie = true;
         }
         else trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=2;
+        print(0, 25, zatopienie==1?'1':'0');
+        print(0, 26, trafienie==1?'1':'0');
         // zalozmy ze mamy czesc takiej planszy:
         // ...#...
         // ...#...
@@ -45,28 +47,37 @@ class Bot1{
         // sprawdzmy wiec najpierw czy dookola [kolumna][wiersz] jest jakis punkt ktory byl trafiony
         // jesli byl trafiony (jest to u nas punkt nad nami), to do kolejki chcemy dodac tylko punkt pod nami, bo punkt nad nami jest juz trafiony, a punkty na lewo i prawo na pewno nie beda miec statku, bo mialby wtedy ksztalt L 
         if(trafienie){
-            trafiony[kolumna][wiersz] = true;
+            trafiony[wiersz][kolumna] = true;
             bool czy_wczesniej_trafione_obok = false;
             for(auto para : kierunki){
                 int x = kolumna+para.second;
                 int y = wiersz+para.first;
                 if(!poza_plansza(y, x) && trafiony[y][x]){
+                    print(0, 21, to_string(y));
+                    print(0, 22, to_string(x));
                     czy_wczesniej_trafione_obok = true;
                     if(!poza_plansza(y-2*para.first, x-2*para.second) && moge_strzelic[y-2*para.first][x-2*para.second]){
                         kolejka_strzalow.push_front({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
                     }
+                    //.....
+                    //.TX#.
+                    //.....
                     for(auto para2 : kierunki){
                         if(para.first != 0){
                             if(para2.first == 0){ //naszym celem jest usuniecie statkow ktore stworza L (skoro byl trafiony np. punkt pod nami, to na pewno nie chcemy moge_strzelic w punkt ktory jest po prawej i lewej od tego pod nami, bo wtedy statek by mial ksztalt L). wiec jesli para.first != 0 to znaczy ze poszlo y w gore o 1 lub dol, wiec nasza para2.first musi byc rowna 0 zeby nie isc y gora dol tylko x.
                             // jesli dodamy tylko moge_strzelic = false, to przy funkcji strzal() wyjmie nam z kolejki ten punkt jesli jest falszywy (1szy if w funkcji strzal())
                                 moge_strzelic[y][x+para2.second] = false;
+                                moge_strzelic[y][x-para2.second] = false;
                                 moge_strzelic[wiersz][kolumna+para2.second] = false; //zaznaczmy od razu kolo obecnego trafienia
+                                moge_strzelic[wiersz][kolumna-para2.second] = false;
                             }       
                         }
                         else{
                             if(para2.first != 0){
                                 moge_strzelic[y+para2.first][x] = false;
+                                moge_strzelic[y-para2.first][x] = false;
                                 moge_strzelic[wiersz+para2.first][kolumna] = false; //zaznaczmy od razu kolo obecnego trafienia
+                                moge_strzelic[wiersz-para2.first][kolumna] = false;
                             }
                         }
                     }
@@ -83,18 +94,21 @@ class Bot1{
         }
         // jak nie trafimy to nie robimy nic
         if(zatopienie){
+            trafiony[wiersz][kolumna] = true;
             //bfs przechodzimy po trafieniach i dodajemy wszystkie wspolrzedne dookola trafien jako false w moge_strzelic, aby bot nigdy wiecej do nich nie strzelil.
             queue<pair<int, int>> bfs;
-            bfs.push({kolumna, wiersz});
+            bfs.push({wiersz, kolumna});
             bool visited[10][10];
             for(int i = 0; i<10; i++){
                 for(int j = 0; j<10; j++){
                     visited[i][j] = false;
                 }
             }
+            vector<pair<int, int>> statek_id;
             while(!bfs.empty()){
                 int y = bfs.front().first;
                 int x = bfs.front().second;
+                statek_id.push_back({y, x});
                 bfs.pop();
                 moge_strzelic[y][x] = false;
                 if(visited[y][x])continue;
@@ -103,11 +117,27 @@ class Bot1{
                     if(poza_plansza(y+para.first, x+para.second)){
                         continue;
                     }
-                    moge_strzelic[y+para.first][x+para.second] = false;
-                    if(trafiony[y+para.first][x+para.second] && !visited[y+para.first][x+para.first]){
+                    if(trafiony[y+para.first][x+para.second] && !visited[y+para.first][x+para.second]){
                         bfs.push({y+para.first, x+para.second});
                     }
                 }
+            }
+            for(pair<int, int> para : statek_id){
+                int y = para.first;
+                int x = para.second;
+                int i = 0;
+                for(auto p : kierunki8){
+                    if(!poza_plansza(y+p.first, x+p.second)){
+                        moge_strzelic[y+p.first][x+p.second] = false;
+                        print(i*4+0, 24, to_string(y+p.first));
+                        print(i*4+2, 24, to_string(x+p.second));
+                        i++;
+                    }
+                }
+            }
+            for(int i = 0; i<statek_id.size(); i++){
+                print(i*4+0, 23, to_string(statek_id[i].first));
+                print(i*4+2, 23, to_string(statek_id[i].second));
             }
         }
         for(int i = 0; i<10; i++){
@@ -115,14 +145,18 @@ class Bot1{
                 print(j, 11+i, moge_strzelic[i][j]?'1':'0');
             }
         }
-// nie dziala to ze nie moze byc L statek
-// nie dziala zaznaczanie pol dookola jak zatopiony
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                print(j, 30+i, trafiony[i][j]?'1':'0');
+            }
+        }
     }
     public: 
     Bot1(){
         srand(time(NULL));
         for(int i = 0; i<10; i++){
             for(int j = 0; j<10; j++){
+                trafiony[i][j] = false;
                 moge_strzelic[i][j] = true;
                 pair<int, int> para = {i, j};
                 pola_do_strzalow.push_back(para);
