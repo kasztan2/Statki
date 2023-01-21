@@ -13,7 +13,7 @@ int main()
     curs_set(0);
 
     Menu menu(30, 120);
-    menu.start();
+    //menu.start();
     
     start_gry();
 
