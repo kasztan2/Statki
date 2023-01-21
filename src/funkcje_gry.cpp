@@ -67,6 +67,7 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
             q.pop();
             int kol = para.first;
             int wier = para.second;
+            poprzednie_strzaly[kol][wier] = true;
             for(auto u : kierunki){
                 if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second] && !visited[kol+u.first][wier+u.second]){
                     q.push({kol+u.first, wier+u.second});
