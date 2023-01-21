@@ -37,8 +37,6 @@ class Bot1{
             zatopienie = true;
         }
         else trafienia_wczesniejsze_do_rysowania[kolumna][wiersz]=2;
-        print(0, 25, zatopienie==1?'1':'0');
-        print(0, 26, trafienie==1?'1':'0');
         // zalozmy ze mamy czesc takiej planszy:
         // ...#...
         // ...#...
@@ -53,8 +51,6 @@ class Bot1{
                 int x = kolumna+para.second;
                 int y = wiersz+para.first;
                 if(!poza_plansza(y, x) && trafiony[y][x]){
-                    print(0, 21, to_string(y));
-                    print(0, 22, to_string(x));
                     czy_wczesniej_trafione_obok = true;
                     if(!poza_plansza(y-2*para.first, x-2*para.second) && moge_strzelic[y-2*para.first][x-2*para.second]){
                         kolejka_strzalow.push_front({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
@@ -129,25 +125,9 @@ class Bot1{
                 for(auto p : kierunki8){
                     if(!poza_plansza(y+p.first, x+p.second)){
                         moge_strzelic[y+p.first][x+p.second] = false;
-                        print(i*4+0, 24, to_string(y+p.first));
-                        print(i*4+2, 24, to_string(x+p.second));
                         i++;
                     }
                 }
-            }
-            for(int i = 0; i<statek_id.size(); i++){
-                print(i*4+0, 23, to_string(statek_id[i].first));
-                print(i*4+2, 23, to_string(statek_id[i].second));
-            }
-        }
-        for(int i = 0; i<10; i++){
-            for(int j = 0; j<10; j++){
-                print(j, 11+i, moge_strzelic[i][j]?'1':'0');
-            }
-        }
-        for(int i = 0; i<10; i++){
-            for(int j = 0; j<10; j++){
-                print(j, 30+i, trafiony[i][j]?'1':'0');
             }
         }
     }
