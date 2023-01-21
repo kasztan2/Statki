@@ -73,6 +73,10 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
                     q.push({kol+u.first, wier+u.second});
                     byl_jakis_obok_trafiony++;
                 }
+                else if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second] && plansza[kol+2*u.first][wier+2*u.second] == ' '){
+                    ilosc_statkow[byl_jakis_obok_trafiony+1]--;
+                    return 2;
+                }
                 if(plansza[kol+u.first][wier+u.second] == '#' && !poprzednie_strzaly[kol+u.first][wier+u.second]){
                     poprzednie_strzaly[kolumna][wiersz] = true;
                     return 1; // jest trafienie, a obok stoi dalej jakis statek ktory nie zostal zatopiony
@@ -80,7 +84,6 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
             }
         }
         ilosc_statkow[byl_jakis_obok_trafiony+1]--;
-        poprzednie_strzaly[kolumna][wiersz] = true;
         return 2;
 
     }
