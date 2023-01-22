@@ -11,7 +11,6 @@ Menu::Menu(int height, int width)
     _curr_section = menu;
     start_color();
     init_colors();
-    keypad(_menu, true);
 }
 
 Menu::~Menu()
@@ -43,7 +42,7 @@ void Menu::init(const std::vector<std::string>& options)
     
     print_menu(options);
     if (_curr_section != instructions) {
-        print_ship();
+        print_file();
     }
     update();
 
@@ -57,7 +56,7 @@ void Menu::init(const std::vector<std::string>& options)
         clear();
         print_menu(options);
         if (_curr_section != instructions) {
-            print_ship();
+            print_file();
         }
     }
 }
@@ -88,7 +87,7 @@ int Menu::get_size()
     } else if (_curr_section == new_game) {
         return _new_game_options.size();
     }
-    return _instruction_options.size();
+    return 1;
 }
 
 void Menu::move_up()
@@ -155,14 +154,13 @@ void Menu::select_option()
             _curr_section = end;
             //            wywolaj bota nr 1
         } else if (_curr_section == instructions) {
-            _curr_section = menu;
             section_return();
         }
         break;
 
     case 1:
         if (_curr_section == menu) {
-            _curr_section=instructions;
+            _curr_section = instructions;
             section_instructions();
         } else if (_curr_section == new_game) {
             _curr_section = end;
@@ -228,16 +226,15 @@ void Menu::section_new_game()
     init(_new_game_options);
 }
 
-// TODO
 void Menu::section_instructions()
 {
     std::ifstream file("instrukcje.txt");
     _prev_selected_option = _selected_option;
     _selected_option = 0;
-    init(_instruction_options);
+    print_file();
 }
 
-void Menu::print_ship()
+void Menu::print_file()
 {
     std::string line;
     std::ifstream file;
@@ -245,15 +242,24 @@ void Menu::print_ship()
     if (_curr_section == menu) {
         file.open("statki_napis.txt");
         y = getmaxy(_menu) / 8;
-    } else {
+    } else if (_curr_section == new_game){
         file.open("statek_ascii.txt");
+        y = getmaxy(_menu) / 4;
+    } else {
+        file.open("instrukcje.txt");
         y = getmaxy(_menu) / 4;
     }
 
     if (file.is_open()) {
         wattron(_menu, A_BOLD);
         while (getline(file, line)) {
-            mvwprintw(_menu, y, getmaxx(_menu) / 2 - line.length() / 2, "%s", line.c_str());
+            if (_curr_section == instructions && !line.empty() && line.back() != ':') {
+                wattroff(_menu, A_BOLD);
+                mvwprintw(_menu, y, getmaxx(_menu) / 2 - line.length() / 2, "%s", line.c_str());
+                wattron(_menu, A_BOLD);
+            } else {            
+                mvwprintw(_menu, y, getmaxx(_menu) / 2 - line.length() / 2, "%s", line.c_str());
+            }
             ++y;
         }
         file.close();
@@ -265,10 +271,16 @@ void Menu::print_ship()
         wattron(_menu, A_BOLD);
         mvwprintw(_menu, y + 2, getmaxx(_menu) / 2 - tmp.length() / 2, "%s", tmp.c_str());
         wattroff(_menu, A_BOLD);
+    } else if (_curr_section == instructions) {
+        std::string tmp = "Wróć do menu";
+        print_selected_option(tmp, y + 2, getmaxx(_menu) / 2 - tmp.length() / 2);
+        while (_curr_section == instructions) {
+            get_move();
+        }
     }
 }
 
-void Menu::print_to_small()
+void Menu::print_too_small()
 {
     std::string msg = "ZA MAŁY TERMINAL";
     int x = COLS / 2  - msg.length() / 2;
@@ -281,10 +293,10 @@ void Menu::check_wind()
     while (_menu == nullptr) {
         wclear(stdscr);
         refresh();
-        print_to_small();
+        print_too_small();
         if (getch() == KEY_RESIZE) {
             _menu = newwin(_height, _width, LINES / 2 - _height / 2, COLS / 2 - _width / 2);
-            keypad(_menu, true);
         }
     }
+    keypad(_menu, true);
 }
