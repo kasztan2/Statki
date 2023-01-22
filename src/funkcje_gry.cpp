@@ -332,14 +332,16 @@ void start_gry(){
             rysujTrafieniaBota(rysowanie_strzalow_bota);
         }
     }
-    print(0, 0, "Gra zakończona!");
     int przegrany = koniec_gry(ilosc_statkow1, ilosc_statkow2);
+    clear();
     if(przegrany == 1){
-        print(0, 0, "Przegrałeś!");
+        print(60, 0, "Przegrałeś!");
     }
     else{
-        print(0, 0, "Wygrałeś!");
+        print(60, 0, "Wygrałeś!");
     }
+    print(40, 1, "Naciśnij dowolny przycisk, aby zakończyć program...");
+    getch();
 
 
 }
