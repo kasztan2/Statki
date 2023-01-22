@@ -1,4 +1,3 @@
-#include <iostream>
 #include "funkcje_gry.h"
 #include "plansza.h"
 #include "bot1.h"
@@ -44,5 +43,4 @@ int zagraj_gre(Bot1 gracz1, Bot1 gracz2){ // zwraca kto wygral gre - 1 czy 2 gra
         return 2;
     }
     return 1;
-
 }
