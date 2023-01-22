@@ -141,7 +141,7 @@ pair<int, int> zapytaj_o_strzal(){
         {
             if(x<9)++x;
         }
-        else if(k==' ')//zaakceptuj
+        else if(k==' '||k==10)//zaakceptuj
         {
             //TODO sprawdzenie, czy użytkownik nie strzela w pole, w które już strzelił
             break;

@@ -140,7 +140,7 @@ void faza_ustawiania(char plansza[][10])
             {
                 if((kierunek==0&&y<=10-rozmiar)||(kierunek==1&&x<=10-rozmiar))kierunek=!kierunek;
             }
-            else if(k==' ')//zaakceptuj pozycję statku i spróbuj go ustawić
+            else if(k==' '||k==10)//zaakceptuj pozycję statku i spróbuj go ustawić
             {
                 if(ustawStatek(plansza, x, y, kierunek, rozmiar))
                 {

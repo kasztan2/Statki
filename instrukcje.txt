@@ -1,8 +1,8 @@
 Ustawianie statków:
 Wybór miejsca - strzałki
 Obracanie - r
-Zatwierdź - spacja
+Zatwierdź - enter/spacja
 
 Właściwa gra:
-Wybierz miejsce gdzie chcesz strzelić za pomocą strzałek i zatwierdź spacją.
+Wybierz miejsce gdzie chcesz strzelić za pomocą strzałek i zatwierdź enterem lub spacją.
 
