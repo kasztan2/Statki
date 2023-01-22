@@ -299,6 +299,7 @@ void start_gry(){
         print(0, 0, "Wybierz pole w ktore chcesz strzelić");
     }
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
+        // print(0, 12, "                 ");
         if(tura_bota){
             int wynik = gracz2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
             if(wynik == 0){
@@ -309,9 +310,25 @@ void start_gry(){
         else{
             pair<int, int> strzal1 = zapytaj_o_strzal();
             int trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2);
+            if(trafil_gracz == 2){
+                print(0, 12, "Zatopiłeś statek!  ");
+            }
+            if(trafil_gracz == 1){
+                print(0, 12, "Trafiles w statek! ");
+            }
             if(trafil_gracz == 0){
                 tura_bota = true;
+                print(0, 12, "Pudło!             ");
             }
+            print(0, 13, "Pozostałe statki:");
+            print(0, 14, "Jednomasztowce: ");
+            print(20, 14, to_string(ilosc_statkow2[0]));
+            print(0, 15, "Dwumasztowce: ");
+            print(20, 15, to_string(ilosc_statkow2[1]));
+            print(0, 16, "Trójmasztowce: ");
+            print(20, 16, to_string(ilosc_statkow2[2]));
+            print(0, 17, "Czteromasztowce: ");
+            print(20, 17, to_string(ilosc_statkow2[3]));
             rysujTrafieniaBota(rysowanie_strzalow_bota);
         }
     }
