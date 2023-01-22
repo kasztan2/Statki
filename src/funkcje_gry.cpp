@@ -50,12 +50,8 @@ int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
 }
 
 int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4]){
-    //if(kolumna>60)kolumna-=0;
-    print(0, 0, "strzal_w_pole");
     if(plansza[kolumna][wiersz] == '#'){
-        print(0, 0, "trafienie");
         if(plansza==plansza2)poprzednie_udane_strzaly1[kolumna][wiersz]=true;
-        print(0, 0, "def");
         queue<pair<int, int>> q;
         q.push({kolumna, wiersz});
         bool visited[10][10];
@@ -88,7 +84,6 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
 
     }
     else{
-        print(0, 0, "pudlo");
         if(plansza==plansza2)poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
         return 0;
     }
