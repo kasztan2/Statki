@@ -257,20 +257,25 @@ void start_gry(){
         //sleep(3);
         print(0, 0, "Wybierz pole w ktore chcesz strzelić");
     }
+
+    int trafil_gracz = 1;
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
         if(gracz_startujacy == 1){
-            
             pair<int, int> strzal1 = zapytaj_o_strzal();
-            strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
-            gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
+            trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
+            if (!trafil_gracz){
+                gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
+            }
             rysujTrafieniaBota(rysowanie_strzalow_bota);
         }
         else
         {
-            gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
+            if (!trafil_gracz){
+                gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
+            }
             rysujTrafieniaBota(rysowanie_strzalow_bota);
             pair<int, int> strzal1 = zapytaj_o_strzal();
-            strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
+            trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
         }
     }
     print(0, 0, "Gra zakończona!");
