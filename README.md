@@ -39,5 +39,5 @@ make
 
 ## Uruchamianie
 
-Uruchom plik `statki`.
+Uruchom plik `statki`.  
 **Uwaga:** okno terminala musi być wymiarów co najmniej `120x30`.
