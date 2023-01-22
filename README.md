@@ -2,21 +2,26 @@
 
 ## Instalacja
 ### Linux
-Zainstaluj `ncurses`, `coreutils`, `make`. Na Debianie/Ubuntu:
+Zainstaluj potrzebne pakiety.
+#### Debian/Ubuntu[^1]
 ```bash
 sudo apt install libncurses5-dev libncursesw5-dev coreutils make
-```  
-[Instrukcje instalacji ncurses dla innych dystrybucji](https://www.cyberciti.biz/faq/linux-install-ncurses-library-headers-on-debian-ubuntu-centos-fedora)
+```
+[^1]: sprawdzone na `Ubuntu 22.10`
+#### Fedora
+```bash
+sudo dnf install ncurses-devel
+```
+
+---
 
 Następnie zbuduj program komendą
 ```bash
 make
 ```
-  
-Teraz odpal plik `statki`.
 
 
-### MacOS
+### MacOS[^2]
 Potrzebny jest `gcc` (aby `#include <bits/stdc++.h>` działał). Bazowo na macOS jest zainstalowany Clang, więc trzeba doinstalować `gcc` za pomocą komendy 
 ```
 brew install gcc
@@ -30,5 +35,9 @@ Następnie zbuduj program komendą
 ```bash
 make
 ```
-  
-Teraz odpal plik `statki`.
+[^2]: sprawdzone na `macOS 13.1`
+
+## Uruchamianie
+
+Uruchom plik `statki`.  
+**Uwaga:** okno terminala musi być wymiarów co najmniej `120x30`.

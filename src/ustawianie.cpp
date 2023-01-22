@@ -71,16 +71,49 @@ void faza_ustawiania(char plansza[][10])
     print(27, 10, " statek w trakcie ustawiania");
 
     std::vector<int> statki={1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
+
+    //wyświetl statek do ustawienia, na początku w defaultowej pozycji
+    for(int i=0; i<4; ++i)
+    {
+        attron(A_BLINK | COLOR_PAIR(KOLOR_USTAWIANIE_NA_NIEBIESKIM));
+        mvaddstr(2, 2*i+1, "██");
+        attroff(A_BLINK | COLOR_PAIR(KOLOR_USTAWIANIE_NA_NIEBIESKIM));
+    }
+
     while(!statki.empty())
     {
         int rozmiar=statki.back();
         statki.pop_back();
-        bool kierunek=0;// 0 - poziomo, 1 - pionowo
-        int x=0, y=0;//koordynaty gdzie lewy górny róg to (0, 0)
+        static bool kierunek=0;// 0 - poziomo, 1 - pionowo
+        static int x=0, y=0;//koordynaty gdzie lewy górny róg to (0, 0)
         int k;
 
-        //wyświetl statek do ustawienia, na początku w defaultowej pozycji
-        for(int i=x; i<x+rozmiar; ++i)print(2*i, y+1, "██", KOLOR_USTAWIANIE);
+
+        if(kierunek==0)
+        {
+            for(int i=x; i<x+rozmiar; ++i)
+            {
+                int kolor;
+                if(plansza[i][y]=='#')kolor=KOLOR_USTAWIANIE_NA_ZIELONYM;
+                else kolor=KOLOR_USTAWIANIE_NA_NIEBIESKIM;
+                attron(A_BLINK | COLOR_PAIR(kolor));
+                mvaddstr(y+2, 2*i+1, "██");
+                attroff(A_BLINK | COLOR_PAIR(kolor));
+            }
+        }
+        else
+        {
+            for(int i=y; i<y+rozmiar; ++i)
+            {
+                int kolor;
+                if(plansza[x][i]=='#')kolor=KOLOR_USTAWIANIE_NA_ZIELONYM;
+                else kolor=KOLOR_USTAWIANIE_NA_NIEBIESKIM;
+                attron(A_BLINK | COLOR_PAIR(kolor));
+                mvaddstr(i+2, 2*x+1, "██");
+                attroff(A_BLINK | COLOR_PAIR(kolor));
+            }
+        }
+
         
         while(1)
         {
@@ -124,14 +157,24 @@ void faza_ustawiania(char plansza[][10])
             {
                 for(int i=x; i<x+rozmiar; ++i)
                 {
-                    print(2*i, y+1, "██", KOLOR_USTAWIANIE);
+                    int kolor;
+                    if(plansza[i][y]=='#')kolor=KOLOR_USTAWIANIE_NA_ZIELONYM;
+                    else kolor=KOLOR_USTAWIANIE_NA_NIEBIESKIM;
+                    attron(A_BLINK | COLOR_PAIR(kolor));
+                    mvaddstr(y+2, 2*i+1, "██");
+                    attroff(A_BLINK | COLOR_PAIR(kolor));
                 }
             }
             else
             {
                 for(int i=y; i<y+rozmiar; ++i)
                 {
-                    print(2*x, i+1, "██", KOLOR_USTAWIANIE);
+                    int kolor;
+                    if(plansza[x][i]=='#')kolor=KOLOR_USTAWIANIE_NA_ZIELONYM;
+                    else kolor=KOLOR_USTAWIANIE_NA_NIEBIESKIM;
+                    attron(A_BLINK | COLOR_PAIR(kolor));
+                    mvaddstr(i+2, 2*x+1, "██");
+                    attroff(A_BLINK | COLOR_PAIR(kolor));
                 }
             }
         }

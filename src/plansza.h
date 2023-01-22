@@ -8,6 +8,10 @@
 #define KOLOR_USTAWIANIE 3
 #define KOLOR_TRAFIONY 4
 #define KOLOR_PUDLO 5
+#define KOLOR_USTAWIANIE_NA_ZIELONYM 20
+#define KOLOR_USTAWIANIE_NA_NIEBIESKIM 21
+#define KOLOR_USTAWIANIE_NA_ZOLTYM 22
+#define KOLOR_USTAWIANIE_NA_CZERWONYM 23
 
 void print(int x, int y, std::string str, int kolor);
 void print(int x, int y, char znak, int kolor);
