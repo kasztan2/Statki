@@ -58,20 +58,18 @@ int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
 
 void obrysuj_zatoplony_statek(int kolumna, int wiersz, char plansza[][10]){
     int orientacja=0;//1-vertical 2-horizontal
-    int poczatek = -1;//poczatek statku
     if ((kolumna!=0 && plansza[kolumna-1][wiersz]=='#') || (kolumna!=10 && plansza[kolumna+1][wiersz]=='#')) {
-        orientacja = 1;
-    } else if((wiersz !=0 && plansza[kolumna][wiersz-1]=='#')||(wiersz!=10 && plansza[kolumna][wiersz+1])) {
         orientacja = 2;
+    } else if((wiersz !=0 && plansza[kolumna][wiersz-1]=='#')||(wiersz!=10 && plansza[kolumna][wiersz+1])) {
+        orientacja = 1;
     }
 
     if (orientacja==1)
     {
-        while (plansza[kolumna][wiersz]!=' ')
+        while (wiersz>=0 && plansza[kolumna][wiersz]=='#')
         {
             wiersz--;
         }
-        poczatek == wiersz;
         if (wiersz >= 0){
             poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
         }
@@ -80,20 +78,28 @@ void obrysuj_zatoplony_statek(int kolumna, int wiersz, char plansza[][10]){
                 if(kolumna-1 >= 0) {
                     poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
                 }
-                if (kolumna+1 <= 10){
+                if (kolumna+1 <= 9){
                     poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
                 }
             }
-        } while ((wiersz++)<=10 && plansza[kolumna][wiersz]!=' ');
-        if (wiersz<=10) poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+        } while ((++wiersz)<10 && plansza[kolumna][wiersz]=='#');
+        if (wiersz<10) {
+            poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+            if(kolumna-1 >= 0) {
+                poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
+            }
+            if (kolumna+1 <= 9){
+                poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
+            }
+        };
+
     }
     else if (orientacja==2)
     {
-        while (plansza[kolumna][wiersz]!=' ')
+        while (kolumna>=0 && plansza[kolumna][wiersz]=='#')
         {
             kolumna--;
         }
-        poczatek == kolumna;
         if (kolumna >= 0){
             poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
         }
@@ -102,23 +108,35 @@ void obrysuj_zatoplony_statek(int kolumna, int wiersz, char plansza[][10]){
                 if (wiersz-1>=0){
                     poprzednie_nieudane_strzaly1[kolumna][wiersz-1]=true;
                 }
-                if (wiersz+1<=10){
+                if (wiersz+1<=9){
                     poprzednie_nieudane_strzaly1[kolumna][wiersz+1]=true;
                 }
             }
-        } while ((kolumna++)<=10 && plansza[kolumna][wiersz]!=' ');
-        if (kolumna<=10) poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+        } while ((++kolumna)<10 && plansza[kolumna][wiersz]=='#');
+        if (kolumna<10) {
+            poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+            if (wiersz-1>=0){
+                poprzednie_nieudane_strzaly1[kolumna][wiersz-1]=true;
+            }
+            if (wiersz+1<=9){
+                poprzednie_nieudane_strzaly1[kolumna][wiersz+1]=true;
+            }
+        }
     } else {
         if (wiersz-1>=0){
             poprzednie_nieudane_strzaly1[kolumna][wiersz-1]=true;
             if (kolumna-1>=0){
                 poprzednie_nieudane_strzaly1[kolumna-1][wiersz-1]=true;
-                poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
             }
             if (kolumna+1<=10){
                 poprzednie_nieudane_strzaly1[kolumna+1][wiersz-1]=true;
-                poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
             }
+        }
+        if (kolumna-1>=0){
+            poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
+        }
+        if (kolumna+1<=10){
+            poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
         }
         if (wiersz+1<=10){
             poprzednie_nieudane_strzaly1[kolumna][wiersz+1]=true;
@@ -189,7 +207,7 @@ int strzal_w_pole(int y, int x, char plansza[][10], bool poprzednie_strzaly_traf
         if(ilosc == statek_id.size()){
             ilosc_statkow[ilosc]-=1;
             print(0, 23, '2');
-            obrysuj_zatoplony_statek(kolumna, wiersz, plansza);
+            if (plansza == plansza2) obrysuj_zatoplony_statek(y, x, plansza);
             return 2;
         }
         print(0, 23, '1');
