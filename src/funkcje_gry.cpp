@@ -90,9 +90,15 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
 }
 
 pair<int, int> zapytaj_o_strzal(){
-    int k, x=0, y=0;
+    static int k, x=0, y=0;
     rysujPlanszePrzeciwnika(poprzednie_udane_strzaly1, poprzednie_nieudane_strzaly1);
-    print(25+2*x, y+1, "██", KOLOR_USTAWIANIE);
+    int kolor;
+    if(poprzednie_udane_strzaly1[x][y])kolor=KOLOR_USTAWIANIE_NA_CZERWONYM;
+    else if(poprzednie_nieudane_strzaly1[x][y])kolor=KOLOR_USTAWIANIE_NA_ZOLTYM;
+    else kolor=KOLOR_USTAWIANIE_NA_NIEBIESKIM;
+    attron(A_BLINK | COLOR_PAIR(kolor));
+    mvaddstr(y+2, 25+2*x+1, "██");
+    attroff(A_BLINK | COLOR_PAIR(kolor));
     while(1)
     {
         k=getch();
@@ -119,7 +125,13 @@ pair<int, int> zapytaj_o_strzal(){
             break;
         }
         rysujPlanszePrzeciwnika(poprzednie_udane_strzaly1, poprzednie_nieudane_strzaly1);
-        print(25+2*x, y+1, "██", KOLOR_USTAWIANIE);
+
+        if(poprzednie_udane_strzaly1[x][y])kolor=KOLOR_USTAWIANIE_NA_CZERWONYM;
+        else if(poprzednie_nieudane_strzaly1[x][y])kolor=KOLOR_USTAWIANIE_NA_ZOLTYM;
+        else kolor=KOLOR_USTAWIANIE_NA_NIEBIESKIM;
+        attron(A_BLINK | COLOR_PAIR(kolor));
+        mvaddstr(y+2, 25+2*x+1, "██");
+        attroff(A_BLINK | COLOR_PAIR(kolor));
     }
     print(25+2*x, y+1, "  ");
     int kolumna=x, wiersz=y;
@@ -280,11 +292,9 @@ void start_gry(){
     print(0, 0, "Gra zakończona!");
     int przegrany = koniec_gry(ilosc_statkow1, ilosc_statkow2);
     if(przegrany == 1){
-        //cout << "Przegrałeś!\n";
         print(0, 0, "Przegrałeś!");
     }
     else{
-        //cout << "Wygrałeś!\n";
         print(0, 0, "Wygrałeś!");
     }
 
