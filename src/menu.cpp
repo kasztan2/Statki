@@ -60,8 +60,8 @@ void Menu::init(const std::vector<std::string>& options)
 
 void Menu::print_menu(const std::vector<std::string>& options)
 {
-    int y = _menu->_maxy / 2 + options.size();
-    int half_col = _menu->_maxx / 2;
+    int y = getmaxy(_menu) / 2 + options.size();
+    int half_col = getmaxx(_menu) / 2;
 
     for (int i = 0; i < options.size(); ++i) {
         int x = half_col - options[i].length() / 2;
@@ -193,7 +193,7 @@ void Menu::print_selected_option(const std::string& option, int y, int x)
     wattroff(_menu, A_BOLD);
 
     wattron(_menu, A_BLINK | COLOR_PAIR(MAG_BLACK));
-    mvwprintw(_menu, y, _menu->_curx + 1, "<-");
+    mvwprintw(_menu, y, getcurx(_menu) + 1, "<-");
     wattroff(_menu, A_BLINK | COLOR_PAIR(MAG_BLACK));
 }
 
@@ -235,16 +235,16 @@ void Menu::print_ship()
     int y = 0;
     if (_curr_section == menu) {
         file.open("statki_napis.txt");
-        y = _menu->_maxy / 8;
+        y = getmaxy(_menu) / 8;
     } else {
         file.open("statek_ascii.txt");
-        y = _menu->_maxy / 4;
+        y = getmaxy(_menu) / 4;
     }
 
     if (file.is_open()) {
         wattron(_menu, A_BOLD);
         while (getline(file, line)) {
-            mvwprintw(_menu, y, _menu->_maxx / 2 - line.length() / 2, "%s", line.c_str());
+            mvwprintw(_menu, y, getmaxx(_menu) / 2 - line.length() / 2, "%s", line.c_str());
             ++y;
         }
         file.close();
@@ -254,7 +254,7 @@ void Menu::print_ship()
     if (_curr_section == new_game) {
         std::string tmp = "Wybierz przeciwnika:";
         wattron(_menu, A_BOLD);
-        mvwprintw(_menu, y + 2, _menu->_maxx / 2 - tmp.length() / 2, "%s", tmp.c_str());
+        mvwprintw(_menu, y + 2, getmaxx(_menu) / 2 - tmp.length() / 2, "%s", tmp.c_str());
         wattroff(_menu, A_BOLD);
     }
 }

@@ -1,0 +1,51 @@
+# depslib dependency file v1.0
+1674410270 source:/home/anastasiia/projekt/statki/src/funkcje_gry.cpp
+	<bits/stdc++.h>
+	<queue>
+	<random>
+	"plansza.h"
+	"bot1.h"
+	"menu.h"
+
+1674305225 /home/anastasiia/projekt/statki/src/plansza.h
+	<bits/stdc++.h>
+	<curses.h>
+
+1674305225 /home/anastasiia/projekt/statki/src/bot1.h
+	<iostream>
+	<string>
+	<queue>
+	<random>
+	"funkcje_gry.h"
+	"plansza.h"
+
+1674405655 /home/anastasiia/projekt/statki/src/funkcje_gry.h
+	<bits/stdc++.h>
+	<random>
+
+1674305225 /home/anastasiia/projekt/statki/src/menu.h
+	<curses.h>
+	<string>
+	<vector>
+	"plansza.h"
+
+1674322713 source:/home/anastasiia/projekt/statki/src/main.cpp
+	"plansza.h"
+	"menu.h"
+	"funkcje_gry.h"
+
+1674305225 source:/home/anastasiia/projekt/statki/src/menu.cpp
+	"menu.h"
+	<fstream>
+
+1674305225 source:/home/anastasiia/projekt/statki/src/plansza.cpp
+	<bits/stdc++.h>
+	<curses.h>
+	"plansza.h"
+
+1672741524 source:/home/anastasiia/projekt/statki/src/ustawianie.cpp
+	"plansza.h"
+
+1672741524 source:/home/anastasiia/projekt/statki/src/plansza_gracz.cpp
+	"plansza.h"
+

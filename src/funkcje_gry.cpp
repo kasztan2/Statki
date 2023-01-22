@@ -28,8 +28,8 @@ bool kto_zaczyna_gre(){
     return 0;
 }
 
-int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){ 
-    bool gracz1 = true; 
+int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
+    bool gracz1 = true;
     bool gracz2 = true;
     for(int i = 0; i<4; i++){
         if(ilosc_statkow1[i] > 0){
@@ -144,10 +144,15 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
             q.pop();
             int kol = para.first;
             int wier = para.second;
+            poprzednie_strzaly[kol][wier] = true;
             for(auto u : kierunki){
                 if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second] && !visited[kol+u.first][wier+u.second]){
                     q.push({kol+u.first, wier+u.second});
                     byl_jakis_obok_trafiony++;
+                }
+                else if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second] && plansza[kol+2*u.first][wier+2*u.second] == ' '){
+                    ilosc_statkow[byl_jakis_obok_trafiony+1]--;
+                    return 2;
                 }
                 if(plansza[kol+u.first][wier+u.second] == '#' && !poprzednie_strzaly[kol+u.first][wier+u.second]){
                     poprzednie_strzaly[kolumna][wiersz] = true;
@@ -156,7 +161,6 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
             }
         }
         ilosc_statkow[byl_jakis_obok_trafiony+1]--;
-        poprzednie_strzaly[kolumna][wiersz] = true;
         if(plansza==plansza2) obrysuj_zatoplony_statek(kolumna, wiersz, plansza);
         return 2;
 

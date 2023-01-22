@@ -46,47 +46,51 @@ class Bot1{
         // jesli byl trafiony (jest to u nas punkt nad nami), to do kolejki chcemy dodac tylko punkt pod nami, bo punkt nad nami jest juz trafiony, a punkty na lewo i prawo na pewno nie beda miec statku, bo mialby wtedy ksztalt L 
         if(trafienie){
             trafiony[wiersz][kolumna] = true;
-            bool czy_wczesniej_trafione_obok = false;
+            // bool czy_wczesniej_trafione_obok = false;
             for(auto para : kierunki){
                 int x = kolumna+para.second;
                 int y = wiersz+para.first;
-                if(!poza_plansza(y, x) && trafiony[y][x]){
-                    czy_wczesniej_trafione_obok = true;
-                    if(!poza_plansza(y-2*para.first, x-2*para.second) && moge_strzelic[y-2*para.first][x-2*para.second]){
-                        kolejka_strzalow.push_front({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
-                    }
+                if(!poza_plansza(y, x)){
+                    kolejka_strzalow.push_front({y, x});
+                }
+            }
+                // if(!poza_plansza(y, x) && trafiony[y][x]){
+                //     czy_wczesniej_trafione_obok = true;
+                //     if(!poza_plansza(y-2*para.first, x-2*para.second) && moge_strzelic[y-2*para.first][x-2*para.second]){
+                //         kolejka_strzalow.push_front({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
+                //     }
                     //.....
                     //.TX#.
                     //.....
-                    for(auto para2 : kierunki){
-                        if(para.first != 0){
-                            if(para2.first == 0){ //naszym celem jest usuniecie statkow ktore stworza L (skoro byl trafiony np. punkt pod nami, to na pewno nie chcemy moge_strzelic w punkt ktory jest po prawej i lewej od tego pod nami, bo wtedy statek by mial ksztalt L). wiec jesli para.first != 0 to znaczy ze poszlo y w gore o 1 lub dol, wiec nasza para2.first musi byc rowna 0 zeby nie isc y gora dol tylko x.
-                            // jesli dodamy tylko moge_strzelic = false, to przy funkcji strzal() wyjmie nam z kolejki ten punkt jesli jest falszywy (1szy if w funkcji strzal())
-                                moge_strzelic[y][x+para2.second] = false;
-                                moge_strzelic[y][x-para2.second] = false;
-                                moge_strzelic[wiersz][kolumna+para2.second] = false; //zaznaczmy od razu kolo obecnego trafienia
-                                moge_strzelic[wiersz][kolumna-para2.second] = false;
-                            }       
-                        }
-                        else{
-                            if(para2.first != 0){
-                                moge_strzelic[y+para2.first][x] = false;
-                                moge_strzelic[y-para2.first][x] = false;
-                                moge_strzelic[wiersz+para2.first][kolumna] = false; //zaznaczmy od razu kolo obecnego trafienia
-                                moge_strzelic[wiersz-para2.first][kolumna] = false;
-                            }
-                        }
-                    }
-                    break; //wiemy ze punkt np nad nami byl juz trafiony, wiec jedyny punkt ktory musimy dodac to ten pod nami ktory juz dodalismy wiec mozemy przerwac petle
-                }
-            }
-            if(!czy_wczesniej_trafione_obok){ //jesli w nic dookola nie trafilismy i teraz trafilismy to statek moze kontynuoowac w dowolna strone
-                for(auto para : kierunki){
-                    if(!poza_plansza(wiersz+para.second, kolumna+para.first)){
-                        kolejka_strzalow.push_front({wiersz+para.second, kolumna+para.first});
-                    }
-                }
-            }
+                    // for(auto para2 : kierunki){
+                    //     if(para.first != 0){
+                    //         if(para2.first == 0){ //naszym celem jest usuniecie statkow ktore stworza L (skoro byl trafiony np. punkt pod nami, to na pewno nie chcemy moge_strzelic w punkt ktory jest po prawej i lewej od tego pod nami, bo wtedy statek by mial ksztalt L). wiec jesli para.first != 0 to znaczy ze poszlo y w gore o 1 lub dol, wiec nasza para2.first musi byc rowna 0 zeby nie isc y gora dol tylko x.
+                    //         // jesli dodamy tylko moge_strzelic = false, to przy funkcji strzal() wyjmie nam z kolejki ten punkt jesli jest falszywy (1szy if w funkcji strzal())
+                    //             moge_strzelic[y][x+para2.second] = false;
+                    //             moge_strzelic[y][x-para2.second] = false;
+                    //             moge_strzelic[wiersz][kolumna+para2.second] = false; //zaznaczmy od razu kolo obecnego trafienia
+                    //             moge_strzelic[wiersz][kolumna-para2.second] = false;
+                    //         }       
+                    //     }
+                    //     else{
+                    //         if(para2.first != 0){
+                    //             moge_strzelic[y+para2.first][x] = false;
+                    //             moge_strzelic[y-para2.first][x] = false;
+                    //             moge_strzelic[wiersz+para2.first][kolumna] = false; //zaznaczmy od razu kolo obecnego trafienia
+                    //             moge_strzelic[wiersz-para2.first][kolumna] = false;
+                    //         }
+                    //     }
+                    // }
+                    // break; //wiemy ze punkt np nad nami byl juz trafiony, wiec jedyny punkt ktory musimy dodac to ten pod nami ktory juz dodalismy wiec mozemy przerwac petle
+            //     }
+            // }
+            // if(!czy_wczesniej_trafione_obok){ //jesli w nic dookola nie trafilismy i teraz trafilismy to statek moze kontynuoowac w dowolna strone
+            //     for(auto para : kierunki){
+            //         if(!poza_plansza(wiersz+para.second, kolumna+para.first)){
+            //             kolejka_strzalow.push_front({wiersz+para.second, kolumna+para.first});
+            //         }
+            //     }
+            // }
         }
         // jak nie trafimy to nie robimy nic
         if(zatopienie){

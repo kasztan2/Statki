@@ -1,0 +1,7 @@
+Ustawianie statków:
+Wybór miejsca - strzałki
+Obracanie - r
+Zatwierdź - spacja
+
+Właściwa gra:
+Wybierz miejsce gdzie chcesz strzelić za pomocą strzałek i zatwierdź spacją.

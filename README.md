@@ -21,6 +21,10 @@ Potrzebny jest `gcc` (aby `#include <bits/stdc++.h>` działał). Bazowo na macOS
 ```
 brew install gcc
 ```
+Dodatkowo potrzebne jest zainstalowanie biblioteki ncurses. 
+```
+brew install ncurses
+```
 
 Następnie zbuduj program komendą
 ```bash
