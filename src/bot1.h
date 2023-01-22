@@ -23,7 +23,7 @@ class Bot1{
         }
         return false;
     }
-    void decyzja(int wiersz, int kolumna, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
+    int decyzja(int wiersz, int kolumna, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){ //funkcja decydujaca co robic na podstawie czy bot trafil czy nie
         moge_strzelic[wiersz][kolumna] = false;
         bool trafienie = false; 
         bool zatopienie = false;
@@ -87,6 +87,7 @@ class Bot1{
                     }
                 }
             }
+            return 1;
         }
         // jak nie trafimy to nie robimy nic
         if(zatopienie){
@@ -129,7 +130,9 @@ class Bot1{
                     }
                 }
             }
+            return 2;
         }
+        return 0;
     }
     public: 
     Bot1(){
@@ -149,7 +152,7 @@ class Bot1{
         }
         pola_do_strzalow.shrink_to_fit();
     }
-    void strzal(char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){
+    int strzal(char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int trafienia_wczesniejsze_do_rysowania[][10]){
         while(!kolejka_strzalow.empty() && !moge_strzelic[kolejka_strzalow.front().first][kolejka_strzalow.front().second]){
             kolejka_strzalow.pop_front();
         }
@@ -157,11 +160,10 @@ class Bot1{
             pair<int, int> para_z_kolejki = kolejka_strzalow.front();
             kolejka_strzalow.pop_front();
             moge_strzelic[para_z_kolejki.first][para_z_kolejki.second] = false;
-            decyzja(para_z_kolejki.first, para_z_kolejki.second, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
-            return;
+            return decyzja(para_z_kolejki.first, para_z_kolejki.second, plansza, poprzednie_strzaly, ilosc_statkow, trafienia_wczesniejsze_do_rysowania);
         }
         //nigdy nie powinien dojsc do tego miejsca, bo to bedzie znaczyc ze kolejka jest pusta, czyli strzelil w kazde mozliwe pole, wiec gra powinna byc juz zakonczona.
         cout << "blad\n";
-        return;
+        return 0;
     }
 };
