@@ -64,11 +64,6 @@ int strzal_w_pole(int y, int x, char plansza[][10], bool poprzednie_strzaly_traf
                 swap(plansza[i][j], plansza[j][i]);
             }
         }
-        for(int i = 0; i<10; i++){
-            for(int j = 0; j<10; j++){
-                print(j, 25+i, plansza[j][i]);
-            }
-        }
         poprzednie_strzaly_trafione[y][x] = true;
         queue<pair<int, int>> q;
         q.push({y, x});
@@ -85,16 +80,9 @@ int strzal_w_pole(int y, int x, char plansza[][10], bool poprzednie_strzaly_traf
             visited[new_y][new_x] = true;
             int licznik = 0;
             for(auto u : kierunki){
-                print(0+14*licznik2, 11+licznik, to_string(new_y+u.first));
-                print(3+14*licznik2, 11+licznik, to_string(new_x+u.second));
-                print(6+14*licznik2, 11+licznik, plansza[new_y+u.first][new_x+u.second]);
-                print(9+14*licznik2, 11+licznik, to_string(int(visited[new_y+u.first][new_x+u.second])));
-                print(12+14*licznik2, 11+licznik, to_string(int(poza_plansza(new_y+u.first, new_x+u.second))));
                 licznik++;
                 if(!poza_plansza(new_y+u.first, new_x+u.second) && plansza[new_y+u.first][new_x+u.second] == '#' && !visited[new_y+u.first][new_x+u.second]){
                     q.push({new_y+u.first, new_x+u.second});
-                    print(0+5*licznik2, 20, to_string(new_y+u.first));
-                    print(3+5*licznik2, 20, to_string(new_x+u.second));
                     statek_id.push_back({new_y+u.first, new_x+u.second});
                 }
             }
@@ -112,10 +100,8 @@ int strzal_w_pole(int y, int x, char plansza[][10], bool poprzednie_strzaly_traf
         }
         if(ilosc == statek_id.size()){
             ilosc_statkow[ilosc]-=1;
-            print(0, 23, '2');
             return 2;
         }
-        print(0, 23, '1');
         return 1;
 
     }
@@ -304,33 +290,29 @@ void start_gry(){
     rysujPlansze(plansza1);
     refresh();
 
+    bool tura_bota = true;
     if(gracz_startujacy == 1 || 0==0){
         //cout << "Zaczynasz gre. Wpisz pole w ktore chcesz strzelic\n";
         //print(0, 0, "Zaczynasz gre");
         //sleep(3);
+        tura_bota = false;
         print(0, 0, "Wybierz pole w ktore chcesz strzelić");
     }
-
-    int trafil_gracz = 1;
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
-        if(gracz_startujacy == 1){
-            pair<int, int> strzal1 = zapytaj_o_strzal();
-            trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2);
-            if (!trafil_gracz){
-                gracz2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
+        if(tura_bota){
+            int wynik = gracz2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
+            if(wynik == 0){
+                tura_bota = false;
             }
             rysujTrafieniaBota(rysowanie_strzalow_bota);
-            debug(to_string(ilosc_statkow1[0])+" "+to_string(ilosc_statkow1[1])+" "+to_string(ilosc_statkow1[2])+" "+to_string(ilosc_statkow1[3]));
         }
-        else
-        {
-            if (!trafil_gracz){
-                gracz2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
+        else{
+            pair<int, int> strzal1 = zapytaj_o_strzal();
+            int trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2);
+            if(trafil_gracz == 0){
+                tura_bota = true;
             }
             rysujTrafieniaBota(rysowanie_strzalow_bota);
-            debug(to_string(ilosc_statkow1[0])+" "+to_string(ilosc_statkow1[1])+" "+to_string(ilosc_statkow1[2])+" "+to_string(ilosc_statkow1[3]));
-            pair<int, int> strzal1 = zapytaj_o_strzal();
-            trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2);
         }
     }
     print(0, 0, "Gra zakończona!");
