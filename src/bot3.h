@@ -47,10 +47,13 @@ class Bot1{
         if(trafienie){
             trafiony[wiersz][kolumna] = true;
             // bool czy_wczesniej_trafione_obok = false;
-            // for(auto para : kierunki){
-            //     int x = kolumna+para.second;
-            //     int y = wiersz+para.first;
-                // if(!poza_plansza(y, x) && trafiony[y][x]){
+            for(auto para : kierunki){
+                int x = kolumna+para.second;
+                int y = wiersz+para.first;
+                if(!poza_plansza(y, x)){
+                    kolejka_strzalow.push_front({y, x});
+                }
+            }
                 //     czy_wczesniej_trafione_obok = true;
                 //     if(!poza_plansza(y-2*para.first, x-2*para.second) && moge_strzelic[y-2*para.first][x-2*para.second]){
                 //         kolejka_strzalow.push_front({y-2*para.first, x-2*para.second}); //nie musimy rozszerzać w drugą stronę, bo mamy na pewno tamten punkt dodany przez punkt trafiony obok
