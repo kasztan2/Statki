@@ -46,8 +46,85 @@ int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
         return 2;
     }
     return 0;
-    
+
 }
+
+void obrysuj_zatoplony_statek(int kolumna, int wiersz, char plansza[][10]){
+    int orientacja=0;//1-vertical 2-horizontal
+    int poczatek = -1;//poczatek statku
+    if ((kolumna!=0 && plansza[kolumna-1][wiersz]=='#') || (kolumna!=10 && plansza[kolumna+1][wiersz]=='#')) {
+        orientacja = 1;
+    } else if((wiersz !=0 && plansza[kolumna][wiersz-1]=='#')||(wiersz!=10 && plansza[kolumna][wiersz+1])) {
+        orientacja = 2;
+    }
+
+    if (orientacja==1)
+    {
+        while (plansza[kolumna][wiersz]!=' ')
+        {
+            wiersz--;
+        }
+        poczatek == wiersz;
+        if (wiersz >= 0){
+            poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+        }
+        do {
+            if (wiersz >= 0) {
+                if(kolumna-1 >= 0) {
+                    poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
+                }
+                if (kolumna+1 <= 10){
+                    poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
+                }
+            }
+        } while ((wiersz++)<=10 && plansza[kolumna][wiersz]!=' ');
+        if (wiersz<=10) poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+    }
+    else if (orientacja==2)
+    {
+        while (plansza[kolumna][wiersz]!=' ')
+        {
+            kolumna--;
+        }
+        poczatek == kolumna;
+        if (kolumna >= 0){
+            poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+        }
+        do {
+            if (kolumna >=0){
+                if (wiersz-1>=0){
+                    poprzednie_nieudane_strzaly1[kolumna][wiersz-1]=true;
+                }
+                if (wiersz+1<=10){
+                    poprzednie_nieudane_strzaly1[kolumna][wiersz+1]=true;
+                }
+            }
+        } while ((kolumna++)<=10 && plansza[kolumna][wiersz]!=' ');
+        if (kolumna<=10) poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+    } else {
+        if (wiersz-1>=0){
+            poprzednie_nieudane_strzaly1[kolumna][wiersz-1]=true;
+            if (kolumna-1>=0){
+                poprzednie_nieudane_strzaly1[kolumna-1][wiersz-1]=true;
+                poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
+            }
+            if (kolumna+1<=10){
+                poprzednie_nieudane_strzaly1[kolumna+1][wiersz-1]=true;
+                poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
+            }
+        }
+        if (wiersz+1<=10){
+            poprzednie_nieudane_strzaly1[kolumna][wiersz+1]=true;
+            if (kolumna-1>=0){
+                poprzednie_nieudane_strzaly1[kolumna-1][wiersz+1]=true;
+            }
+            if (kolumna+1<=10){
+                poprzednie_nieudane_strzaly1[kolumna+1][wiersz+1]=true;
+            }
+        }
+    }
+}
+
 
 int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4]){
     //if(kolumna>60)kolumna-=0;
@@ -80,6 +157,7 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
         }
         ilosc_statkow[byl_jakis_obok_trafiony+1]--;
         poprzednie_strzaly[kolumna][wiersz] = true;
+        if(plansza==plansza2) obrysuj_zatoplony_statek(kolumna, wiersz, plansza);
         return 2;
 
     }
