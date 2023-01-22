@@ -1,10 +1,11 @@
 #include "menu.h"
-//#include "funkcje_gry.h"
 #include <fstream>
 
 Menu::Menu(int height, int width)
 {
     _menu = newwin(height, width, LINES / 2 - height / 2, COLS / 2 - width / 2);
+    _height = height;
+    _width = width;
     _selected_option = 0;
     _prev_selected_option = 0;
     _curr_section = menu;
@@ -31,12 +32,15 @@ void Menu::update()
 
 void Menu::clear()
 {
+    wclear(stdscr);
     wclear(_menu);
     update();
 }
 
 void Menu::init(const std::vector<std::string>& options)
 {
+    check_wind();
+    
     print_menu(options);
     if (_curr_section != instructions) {
         print_ship();
@@ -128,7 +132,12 @@ void Menu::get_move()
         clear();
         select_option();
         break;
-
+        
+    case KEY_RESIZE:
+        _menu = newwin(_height, _width, LINES / 2 - _height / 2, COLS / 2 - _width / 2);
+        check_wind();
+        break;
+        
     default:
         break;
     }
@@ -256,5 +265,26 @@ void Menu::print_ship()
         wattron(_menu, A_BOLD);
         mvwprintw(_menu, y + 2, getmaxx(_menu) / 2 - tmp.length() / 2, "%s", tmp.c_str());
         wattroff(_menu, A_BOLD);
+    }
+}
+
+void Menu::print_to_small()
+{
+    std::string msg = "ZA MAŁY TERMINAL";
+    int x = COLS / 2  - msg.length() / 2;
+    int y = LINES / 2;
+    mvprintw(y, x, "%s", msg.c_str());
+}
+
+void Menu::check_wind()
+{
+    while (_menu == nullptr) {
+        wclear(stdscr);
+        refresh();
+        print_to_small();
+        if (getch() == KEY_RESIZE) {
+            _menu = newwin(_height, _width, LINES / 2 - _height / 2, COLS / 2 - _width / 2);
+            keypad(_menu, true);
+        }
     }
 }

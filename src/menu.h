@@ -20,12 +20,14 @@ enum Section {
 
 class Menu {
     WINDOW* _menu;
+    Section _curr_section;
     std::vector<std::string> _menu_options = { "Nowa gra", "Instrukcje", "Wyjście" };
     std::vector<std::string> _new_game_options = { "Bot 1", "Bot 2", "Bot 3", "Wróć do menu" };
     std::vector<std::string> _instruction_options = { "Wróć do menu" };
     int _selected_option;
     int _prev_selected_option;
-    Section _curr_section;
+    int _height;
+    int _width;
 
     int get_size();
 
@@ -48,6 +50,8 @@ public:
     void section_instructions();
     void print_ship();
     void start();
+    void print_to_small();
+    void check_wind();
 };
 
 #endif //_MENU_H_
