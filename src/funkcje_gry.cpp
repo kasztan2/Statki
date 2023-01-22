@@ -70,7 +70,8 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
                     byl_jakis_obok_trafiony++;
                 }
                 else if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second] && plansza[kol+2*u.first][wier+2*u.second] == ' '){
-                    ilosc_statkow[byl_jakis_obok_trafiony+1]--;
+                    print(0, 15, "a"+to_string(byl_jakis_obok_trafiony));
+                    ilosc_statkow[byl_jakis_obok_trafiony]--;
                     return 2;
                 }
                 if(plansza[kol+u.first][wier+u.second] == '#' && !poprzednie_strzaly[kol+u.first][wier+u.second]){
@@ -79,7 +80,8 @@ int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_s
                 }
             }
         }
-        ilosc_statkow[byl_jakis_obok_trafiony+1]--;
+        print(0, 15, "b"+to_string(byl_jakis_obok_trafiony));
+        ilosc_statkow[byl_jakis_obok_trafiony]--;
         return 2;
 
     }
@@ -278,6 +280,7 @@ void start_gry(){
                 gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
             }
             rysujTrafieniaBota(rysowanie_strzalow_bota);
+            debug(to_string(ilosc_statkow1[0])+" "+to_string(ilosc_statkow1[1])+" "+to_string(ilosc_statkow1[2])+" "+to_string(ilosc_statkow1[3]));
         }
         else
         {
@@ -285,6 +288,7 @@ void start_gry(){
                 gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
             }
             rysujTrafieniaBota(rysowanie_strzalow_bota);
+            debug(to_string(ilosc_statkow1[0])+" "+to_string(ilosc_statkow1[1])+" "+to_string(ilosc_statkow1[2])+" "+to_string(ilosc_statkow1[3]));
             pair<int, int> strzal1 = zapytaj_o_strzal();
             trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
         }
