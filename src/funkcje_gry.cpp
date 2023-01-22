@@ -237,8 +237,9 @@ pair<int, int> zapytaj_o_strzal(){
         }
         else if(k==' ')//zaakceptuj
         {
-            //TODO sprawdzenie, czy użytkownik nie strzela w pole, w które już strzelił
-            break;
+            if (!poprzednie_udane_strzaly1[x][y] && !poprzednie_nieudane_strzaly1[x][y]){
+                 break;
+            }//sprawdzenie, czy użytkownik nie strzela w pole, w które już strzelił
         }
         rysujPlanszePrzeciwnika(poprzednie_udane_strzaly1, poprzednie_nieudane_strzaly1);
 
