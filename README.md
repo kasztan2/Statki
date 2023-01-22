@@ -21,7 +21,7 @@ make
 ```
 
 
-### MacOS[2^]
+### MacOS[^2]
 Potrzebny jest `gcc` (aby `#include <bits/stdc++.h>` działał). Bazowo na macOS jest zainstalowany Clang, więc trzeba doinstalować `gcc` za pomocą komendy 
 ```
 brew install gcc
@@ -35,7 +35,7 @@ Następnie zbuduj program komendą
 ```bash
 make
 ```
-[^2]: Przetestowane na `macOS 13.1`
+[^2]: sprawdzone na `macOS 13.1`
 
 ## Uruchamianie
 
