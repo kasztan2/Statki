@@ -6,8 +6,8 @@
 #include "menu.h"
 using std::queue, std::pair, std::vector, std::cout, std::cin, std::string, std::swap;
 
-bool poprzednie_strzaly1[10][10];
-bool poprzednie_strzaly2[10][10];
+bool poprzednie_strzaly_trafione1[10][10];
+bool poprzednie_strzaly_trafione2[10][10];
 
 //pod rysowanie
 bool poprzednie_nieudane_strzaly1[10][10];
@@ -26,6 +26,13 @@ bool kto_zaczyna_gre(){
         return 1;
     }
     return 0;
+}
+
+bool poza_plansza(int y, int x){
+    if(y >= 10 || y < 0 || x >= 10 || x < 0){
+        return true;
+    }
+    return false;
 }
 
 int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){ 
@@ -49,44 +56,71 @@ int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
     
 }
 
-int strzal_w_pole(int kolumna, int wiersz, char plansza[][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4]){
-    if(plansza[kolumna][wiersz] == '#'){
-        if(plansza==plansza2)poprzednie_udane_strzaly1[kolumna][wiersz]=true;
+int strzal_w_pole(int y, int x, char plansza[][10], bool poprzednie_strzaly_trafione[][10], int ilosc_statkow[4]){
+    if(plansza[y][x] == '#'){
+        if(plansza==plansza2)poprzednie_udane_strzaly1[y][x]=true;
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                swap(plansza[i][j], plansza[j][i]);
+            }
+        }
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                print(j, 25+i, plansza[j][i]);
+            }
+        }
+        poprzednie_strzaly_trafione[y][x] = true;
         queue<pair<int, int>> q;
-        q.push({kolumna, wiersz});
+        q.push({y, x});
         bool visited[10][10];
-        memset(visited, 0, sizeof(visited));
-        int byl_jakis_obok_trafiony = 0;
+        memset(visited, false, sizeof(visited));
+        vector<pair<int, int>> statek_id;
+        int licznik2 = -1;
         while(!q.empty()){
-            pair<int, int> para = q.front();
-            visited[para.first][para.second] = true;
+            licznik2++;
+            pair<int, int> wartosc_z_kolejki = q.front();
             q.pop();
-            int kol = para.first;
-            int wier = para.second;
-            poprzednie_strzaly[kol][wier] = true;
+            int new_y = wartosc_z_kolejki.first;
+            int new_x = wartosc_z_kolejki.second;
+            visited[new_y][new_x] = true;
+            int licznik = 0;
             for(auto u : kierunki){
-                if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second] && !visited[kol+u.first][wier+u.second]){
-                    q.push({kol+u.first, wier+u.second});
-                    byl_jakis_obok_trafiony++;
-                }
-                else if(plansza[kol+u.first][wier+u.second] == '#' && poprzednie_strzaly[kol+u.first][wier+u.second] && plansza[kol+2*u.first][wier+2*u.second] == ' '){
-                    print(0, 15, "a"+to_string(byl_jakis_obok_trafiony));
-                    ilosc_statkow[byl_jakis_obok_trafiony]--;
-                    return 2;
-                }
-                if(plansza[kol+u.first][wier+u.second] == '#' && !poprzednie_strzaly[kol+u.first][wier+u.second]){
-                    poprzednie_strzaly[kolumna][wiersz] = true;
-                    return 1; // jest trafienie, a obok stoi dalej jakis statek ktory nie zostal zatopiony
+                print(0+14*licznik2, 11+licznik, to_string(new_y+u.first));
+                print(3+14*licznik2, 11+licznik, to_string(new_x+u.second));
+                print(6+14*licznik2, 11+licznik, plansza[new_y+u.first][new_x+u.second]);
+                print(9+14*licznik2, 11+licznik, to_string(int(visited[new_y+u.first][new_x+u.second])));
+                print(12+14*licznik2, 11+licznik, to_string(int(poza_plansza(new_y+u.first, new_x+u.second))));
+                licznik++;
+                if(!poza_plansza(new_y+u.first, new_x+u.second) && plansza[new_y+u.first][new_x+u.second] == '#' && !visited[new_y+u.first][new_x+u.second]){
+                    q.push({new_y+u.first, new_x+u.second});
+                    print(0+5*licznik2, 20, to_string(new_y+u.first));
+                    print(3+5*licznik2, 20, to_string(new_x+u.second));
+                    statek_id.push_back({new_y+u.first, new_x+u.second});
                 }
             }
         }
-        print(0, 15, "b"+to_string(byl_jakis_obok_trafiony));
-        ilosc_statkow[byl_jakis_obok_trafiony]--;
-        return 2;
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                swap(plansza[i][j], plansza[j][i]);
+            }
+        }
+        int ilosc = 0;
+        for(auto para : statek_id){
+            if(poprzednie_strzaly_trafione[para.first][para.second]){
+                ilosc++;
+            }
+        }
+        if(ilosc == statek_id.size()){
+            ilosc_statkow[ilosc]-=1;
+            print(0, 23, '2');
+            return 2;
+        }
+        print(0, 23, '1');
+        return 1;
 
     }
     else{
-        if(plansza==plansza2)poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+        if(plansza==plansza2)poprzednie_nieudane_strzaly1[y][x]=true;
         return 0;
     }
 }
@@ -139,10 +173,6 @@ pair<int, int> zapytaj_o_strzal(){
     int kolumna=x, wiersz=y;
     //print(0, 0, std::to_string(rand()));
     return {kolumna, wiersz};
-}
-
-void wczytaj_plansze_gracza(){
-    int pass; // TODO aby wczytac plansze ktora ustawi gracz do zmiennej plansza1
 }
 
 bool mozna_ustawic(bool zajete[][10], int y, int x, int wielkosc, bool pion){
@@ -243,7 +273,17 @@ void losuj_plansze_bota(char plansza2[][10]){
     }
 }
 
+void init_tablice(){
+    for(int i = 0; i<10; i++){
+        for(int j = 0; j<10; j++){
+            poprzednie_strzaly_trafione1[i][j] = false;
+            poprzednie_strzaly_trafione2[i][j] = false;
+        }
+    }
+}
+
 void start_gry(){
+    init_tablice();
     int gracz_startujacy = kto_zaczyna_gre() + 1;
     //std::variant<Bot1, string> gracz2;
     //TO BE vector<std::variant<Bot1, Bot2, Bot3>> gracz2;
@@ -275,9 +315,9 @@ void start_gry(){
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
         if(gracz_startujacy == 1){
             pair<int, int> strzal1 = zapytaj_o_strzal();
-            trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
+            trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2);
             if (!trafil_gracz){
-                gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
+                gracz2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
             }
             rysujTrafieniaBota(rysowanie_strzalow_bota);
             debug(to_string(ilosc_statkow1[0])+" "+to_string(ilosc_statkow1[1])+" "+to_string(ilosc_statkow1[2])+" "+to_string(ilosc_statkow1[3]));
@@ -285,12 +325,12 @@ void start_gry(){
         else
         {
             if (!trafil_gracz){
-                gracz2.strzal(plansza1, poprzednie_strzaly1, ilosc_statkow1, rysowanie_strzalow_bota);
+                gracz2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
             }
             rysujTrafieniaBota(rysowanie_strzalow_bota);
             debug(to_string(ilosc_statkow1[0])+" "+to_string(ilosc_statkow1[1])+" "+to_string(ilosc_statkow1[2])+" "+to_string(ilosc_statkow1[3]));
             pair<int, int> strzal1 = zapytaj_o_strzal();
-            trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly2, ilosc_statkow2);
+            trafil_gracz = strzal_w_pole(strzal1.first, strzal1.second, plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2);
         }
     }
     print(0, 0, "Gra zakończona!");
