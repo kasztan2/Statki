@@ -1,3 +1,10 @@
+«Statki» — to gra dla dwóch graczy, w której ty i bot na zmianę wybieracie miejsce
+dlastrzelania na mapie.  Jeśli przeciwnik już ma tam statek, to statek lub jego część
+„tonie”, a gracz, który trafił, ma prawo wykonać kolejną turę.  
+Twoim celem jest zatopić wszystkie wrogie statki.
+
+Jak kontrolować grę? 
+
 Ustawianie statków:
 Wybór miejsca - strzałki
 Obracanie - r
