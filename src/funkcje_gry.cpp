@@ -35,8 +35,8 @@ bool poza_plansza(int y, int x){
     return false;
 }
 
-int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){ 
-    bool gracz1 = true; 
+int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
+    bool gracz1 = true;
     bool gracz2 = true;
     for(int i = 0; i<4; i++){
         if(ilosc_statkow1[i] > 0){
@@ -53,7 +53,101 @@ int koniec_gry(int ilosc_statkow1[4], int ilosc_statkow2[4]){
         return 2;
     }
     return 0;
-    
+
+}
+
+void obrysuj_zatoplony_statek(int kolumna, int wiersz, char plansza[][10]){
+    int orientacja=0;//1-vertical 2-horizontal
+    if ((kolumna!=0 && plansza[kolumna-1][wiersz]=='#') || (kolumna!=10 && plansza[kolumna+1][wiersz]=='#')) {
+        orientacja = 2;
+    } else if((wiersz !=0 && plansza[kolumna][wiersz-1]=='#')||(wiersz!=10 && plansza[kolumna][wiersz+1])) {
+        orientacja = 1;
+    }
+
+    if (orientacja==1)
+    {
+        while (wiersz>=0 && plansza[kolumna][wiersz]=='#')
+        {
+            wiersz--;
+        }
+        if (wiersz >= 0){
+            poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+        }
+        do {
+            if (wiersz >= 0) {
+                if(kolumna-1 >= 0) {
+                    poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
+                }
+                if (kolumna+1 <= 9){
+                    poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
+                }
+            }
+        } while ((++wiersz)<10 && plansza[kolumna][wiersz]=='#');
+        if (wiersz<10) {
+            poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+            if(kolumna-1 >= 0) {
+                poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
+            }
+            if (kolumna+1 <= 9){
+                poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
+            }
+        };
+
+    }
+    else if (orientacja==2)
+    {
+        while (kolumna>=0 && plansza[kolumna][wiersz]=='#')
+        {
+            kolumna--;
+        }
+        if (kolumna >= 0){
+            poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+        }
+        do {
+            if (kolumna >=0){
+                if (wiersz-1>=0){
+                    poprzednie_nieudane_strzaly1[kolumna][wiersz-1]=true;
+                }
+                if (wiersz+1<=9){
+                    poprzednie_nieudane_strzaly1[kolumna][wiersz+1]=true;
+                }
+            }
+        } while ((++kolumna)<10 && plansza[kolumna][wiersz]=='#');
+        if (kolumna<10) {
+            poprzednie_nieudane_strzaly1[kolumna][wiersz]=true;
+            if (wiersz-1>=0){
+                poprzednie_nieudane_strzaly1[kolumna][wiersz-1]=true;
+            }
+            if (wiersz+1<=9){
+                poprzednie_nieudane_strzaly1[kolumna][wiersz+1]=true;
+            }
+        }
+    } else {
+        if (wiersz-1>=0){
+            poprzednie_nieudane_strzaly1[kolumna][wiersz-1]=true;
+            if (kolumna-1>=0){
+                poprzednie_nieudane_strzaly1[kolumna-1][wiersz-1]=true;
+            }
+            if (kolumna+1<=10){
+                poprzednie_nieudane_strzaly1[kolumna+1][wiersz-1]=true;
+            }
+        }
+        if (kolumna-1>=0){
+            poprzednie_nieudane_strzaly1[kolumna-1][wiersz]=true;
+        }
+        if (kolumna+1<=10){
+            poprzednie_nieudane_strzaly1[kolumna+1][wiersz]=true;
+        }
+        if (wiersz+1<=10){
+            poprzednie_nieudane_strzaly1[kolumna][wiersz+1]=true;
+            if (kolumna-1>=0){
+                poprzednie_nieudane_strzaly1[kolumna-1][wiersz+1]=true;
+            }
+            if (kolumna+1<=10){
+                poprzednie_nieudane_strzaly1[kolumna+1][wiersz+1]=true;
+            }
+        }
+    }
 }
 
 int strzal_w_pole(int y, int x, char plansza[][10], bool poprzednie_strzaly_trafione[][10], int ilosc_statkow[4]){
@@ -100,10 +194,10 @@ int strzal_w_pole(int y, int x, char plansza[][10], bool poprzednie_strzaly_traf
         }
         if(ilosc == statek_id.size()){
             ilosc_statkow[ilosc]-=1;
+            if (plansza == plansza2) obrysuj_zatoplony_statek(y, x, plansza);
             return 2;
         }
         return 1;
-
     }
     else{
         if(plansza==plansza2)poprzednie_nieudane_strzaly1[y][x]=true;
@@ -143,8 +237,9 @@ pair<int, int> zapytaj_o_strzal(){
         }
         else if(k==' '||k==10)//zaakceptuj
         {
-            //TODO sprawdzenie, czy użytkownik nie strzela w pole, w które już strzelił
-            break;
+            if (!poprzednie_udane_strzaly1[x][y] && !poprzednie_nieudane_strzaly1[x][y]){
+                 break;
+            }//sprawdzenie, czy użytkownik nie strzela w pole, w które już strzelił
         }
         rysujPlanszePrzeciwnika(poprzednie_udane_strzaly1, poprzednie_nieudane_strzaly1);
 

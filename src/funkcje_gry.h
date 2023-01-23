@@ -11,4 +11,6 @@ void wczytaj_plansze_gracza();
 std::pair<int, int> zapytaj_o_strzal();
 void init_tablice();
 void start_gry();
+void obrysuj_zatoplony_statek(int kolumna, int wiersz, char plansza[][10]);
+
 
