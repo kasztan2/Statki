@@ -228,7 +228,7 @@ void Menu::section_new_game()
 
 void Menu::section_instructions()
 {
-    std::ifstream file("instrukcje.txt");
+    std::ifstream file("assets/instrukcje.txt");
     _prev_selected_option = _selected_option;
     _selected_option = 0;
     print_file();
@@ -240,13 +240,13 @@ void Menu::print_file()
     std::ifstream file;
     int y = 0;
     if (_curr_section == menu) {
-        file.open("statki_napis.txt");
+        file.open("assets/statki_napis.txt");
         y = getmaxy(_menu) / 8;
     } else if (_curr_section == new_game){
-        file.open("statek_ascii.txt");
+        file.open("assets/statek_ascii.txt");
         y = getmaxy(_menu) / 4;
     } else {
-        file.open("instrukcje.txt");
+        file.open("assets/instrukcje.txt");
         y = getmaxy(_menu) / 4;
     }
 
