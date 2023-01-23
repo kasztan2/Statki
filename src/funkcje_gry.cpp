@@ -277,7 +277,7 @@ void start_gry(){
     //Bot2 bot2;
     //Bot3 bot3;
     //gracz2=bot1;
-    Bot1 gracz2;
+    Bot gracz2;
 
     losuj_plansze_bota(plansza2);
 
