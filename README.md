@@ -37,6 +37,9 @@ make
 ```
 [^2]: sprawdzone na `macOS 13.1`
 
+### Windows
+Program raczej nie działa na Windowsie. *Ktokolwiek używa Windowsa?*
+
 ## Uruchamianie
 
 Uruchom plik `statki`.  
