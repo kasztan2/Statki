@@ -18,12 +18,20 @@ class Bot2{
     public:
     int strzal(char planszabot [10][10], bool poprzednie_strzaly[][10], int ilosc_statkow[4], int bot_rysuj[10][10]){
 
+
+srand(time(NULL));
 x = -1;
 y = -1;
 pusta = -1;
-while (x >=0 && y>=0 && (bot_rysuj[x][y] != 1 || bot_rysuj[x][y] != 2 )){
-srand(time(NULL));
+
+
+while (true){
 miejsce = rand()%100;
+x= miejsce/10;
+y = miejsce %10;
+if (bot_rysuj[x][y] != 1 && bot_rysuj[x][y] != 2 ){
+    break;
+}
 }
         if (planszabot[x][y] == '#'){
         bot_rysuj [x][y] = 1;
@@ -37,7 +45,7 @@ miejsce = rand()%100;
             }
         }
 
-        if(pusta == 0){
+        if(pusta != 0){
             ilosc_statkow [0] = 0;
             ilosc_statkow [1] = 0;
             ilosc_statkow [2] = 0;
