@@ -416,7 +416,7 @@ void start_gry(){
                 print(0, 12, "Zatopiłeś statek!  ");
             }
             if(trafil_gracz == 1){
-                print(0, 12, "Trafiles w statek! ");
+                print(0, 12, "Trafiłeś w statek! ");
             }
             if(trafil_gracz == 0){
                 tura_bota = true;
