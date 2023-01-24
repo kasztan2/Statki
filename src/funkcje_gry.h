@@ -12,5 +12,5 @@ std::pair<int, int> zapytaj_o_strzal();
 void init_tablice();
 void start_gry();
 void obrysuj_zatoplony_statek(int kolumna, int wiersz, char plansza[][10]);
-
+void losuj_plansze_bota(char plansza2[][10]);
 

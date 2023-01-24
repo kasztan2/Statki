@@ -51,7 +51,7 @@ int zagraj_gre1_3(Bot1 gracz1, Bot3 gracz3){ // zwraca kto wygral gre - 1 czy 2 
     char plansza2[10][10];
     bool poprzednie_strzaly_trafione1[10][10];
     bool poprzednie_strzaly_trafione2[10][10];
-    bool uzupelnienie_funkcji[10][10]; // nie bede zmienial funkcji, wrzuce jakas tablice, raczej nie bedziemy rysowac jak boty graja ze soba na porownywarce
+    int uzupelnienie_funkcji[10][10]; // nie bede zmienial funkcji, wrzuce jakas tablice, raczej nie bedziemy rysowac jak boty graja ze soba na porownywarce
     int ilosc_statkow1[4] = {4, 3, 2, 1};
     int ilosc_statkow2[4] = {4, 3, 2, 1};
     for(int i = 0; i<10; i++){
@@ -72,7 +72,7 @@ int zagraj_gre1_3(Bot1 gracz1, Bot3 gracz3){ // zwraca kto wygral gre - 1 czy 2 
             }
         }
         else{
-            int wynik = gracz2.strzal(plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2, uzupelnienie_funkcji);
+            int wynik = gracz3.strzal(plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2, uzupelnienie_funkcji);
             if(wynik == 0){
                 gracz1_tura = 1;
             }
@@ -91,7 +91,7 @@ int zagraj_gre2_3(Bot2 gracz2, Bot3 gracz3){ // zwraca kto wygral gre - 1 czy 2 
     char plansza2[10][10];
     bool poprzednie_strzaly_trafione1[10][10];
     bool poprzednie_strzaly_trafione2[10][10];
-    bool uzupelnienie_funkcji[10][10]; // nie bede zmienial funkcji, wrzuce jakas tablice, raczej nie bedziemy rysowac jak boty graja ze soba na porownywarce
+    int uzupelnienie_funkcji[10][10]; // nie bede zmienial funkcji, wrzuce jakas tablice, raczej nie bedziemy rysowac jak boty graja ze soba na porownywarce
     int ilosc_statkow1[4] = {4, 3, 2, 1};
     int ilosc_statkow2[4] = {4, 3, 2, 1};
     for(int i = 0; i<10; i++){
@@ -106,13 +106,13 @@ int zagraj_gre2_3(Bot2 gracz2, Bot3 gracz3){ // zwraca kto wygral gre - 1 czy 2 
     losuj_plansze_bota(plansza2);
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
         if(gracz1_tura){
-            int wynik = gracz1.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, uzupelnienie_funkcji);
+            int wynik = gracz2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, uzupelnienie_funkcji);
             if(wynik == 0){
                 gracz1_tura = 0;
             }
         }
         else{
-            int wynik = gracz2.strzal(plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2, uzupelnienie_funkcji);
+            int wynik = gracz3.strzal(plansza2, poprzednie_strzaly_trafione2, ilosc_statkow2, uzupelnienie_funkcji);
             if(wynik == 0){
                 gracz1_tura = 1;
             }
@@ -133,6 +133,7 @@ void ranking_botow(){
     Bot3 gracz3;
     int ilosc_gier = 1000;
     vector<int> wygrane(4, 0);
+    //int wygrane[4];
     for(int i = 0; i<ilosc_gier; i++){
         int wygrany1 = zagraj_gre1_3(gracz1, gracz3);
         int wygrany2 = zagraj_gre1_2(gracz1, gracz2);
