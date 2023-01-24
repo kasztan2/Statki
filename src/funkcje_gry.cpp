@@ -373,7 +373,10 @@ void start_gry(){
     //Bot2 bot2;
     //Bot3 bot3;
     //gracz2=bot1;
-    Bot3 gracz2;
+    Bot1 b1;
+    Bot1 b2;//TODO zastąpić tutaj Bot1 na Bot2 jak będzie działał
+    Bot3 b3;
+
 
     losuj_plansze_bota(plansza2);
 
@@ -392,12 +395,15 @@ void start_gry(){
         //print(0, 0, "Zaczynasz gre");
         //sleep(3);
         tura_bota = false;
-        print(0, 0, "Wybierz pole w ktore chcesz strzelić");
+        print(0, 0, "Wybierz pole, w które chcesz strzelić");
     }
     while(koniec_gry(ilosc_statkow1, ilosc_statkow2) == 0){
         // print(0, 12, "                 ");
         if(tura_bota){
-            int wynik = gracz2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
+            int wynik; 
+            if(wybor_bota==0) wynik = b1.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
+            else if(wybor_bota==1) wynik = b2.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
+            else wynik=b3.strzal(plansza1, poprzednie_strzaly_trafione1, ilosc_statkow1, rysowanie_strzalow_bota);
             if(wynik == 0){
                 tura_bota = false;
             }
@@ -410,7 +416,7 @@ void start_gry(){
                 print(0, 12, "Zatopiłeś statek!  ");
             }
             if(trafil_gracz == 1){
-                print(0, 12, "Trafiles w statek! ");
+                print(0, 12, "Trafiłeś w statek! ");
             }
             if(trafil_gracz == 0){
                 tura_bota = true;

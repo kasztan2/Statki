@@ -51,6 +51,22 @@ if (bot_rysuj[x][y] != 1 && bot_rysuj[x][y] != 2 ){
             ilosc_statkow [2] = 0;
             ilosc_statkow [3] = 0;
 
+    }
+    public: 
+    Bot2(){
+        srand(time(NULL));
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                trafiony[i][j] = false;
+                moge_strzelic[i][j] = true;
+                pair<int, int> para = {i, j};
+                pola_do_strzalow.push_back(para);
+            }
+        }
+        std::random_shuffle(pola_do_strzalow.begin(), pola_do_strzalow.end());
+        while(!pola_do_strzalow.empty()){
+            kolejka_strzalow.push_back(pola_do_strzalow.back());
+            pola_do_strzalow.pop_back();
         }
 
 
