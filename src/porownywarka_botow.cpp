@@ -11,7 +11,7 @@ int zagraj_gre1_2(Bot1 gracz1, Bot2 gracz2){ // zwraca kto wygral gre - 1 czy 2 
     char plansza2[10][10];
     bool poprzednie_strzaly_trafione1[10][10];
     bool poprzednie_strzaly_trafione2[10][10];
-    bool uzupelnienie_funkcji[10][10]; // nie bede zmienial funkcji, wrzuce jakas tablice, raczej nie bedziemy rysowac jak boty graja ze soba na porownywarce
+    int uzupelnienie_funkcji[10][10]; // nie bede zmienial funkcji, wrzuce jakas tablice, raczej nie bedziemy rysowac jak boty graja ze soba na porownywarce
     int ilosc_statkow1[4] = {4, 3, 2, 1};
     int ilosc_statkow2[4] = {4, 3, 2, 1};
     for(int i = 0; i<10; i++){
