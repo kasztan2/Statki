@@ -3,6 +3,7 @@
 #include <random>
 #include "plansza.h"
 #include "bot1.h"
+#include "bot2.h"
 #include "bot3.h"
 #include "menu.h"
 using std::queue, std::pair, std::vector, std::cout, std::cin, std::string, std::swap;
@@ -374,7 +375,7 @@ void start_gry(){
     //Bot3 bot3;
     //gracz2=bot1;
     Bot1 b1;
-    Bot1 b2;//TODO zastąpić tutaj Bot1 na Bot2 jak będzie działał
+    Bot2 b2;//TODO zastąpić tutaj Bot1 na Bot2 jak będzie działał
     Bot3 b3;
 
 
