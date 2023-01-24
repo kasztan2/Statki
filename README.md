@@ -1,5 +1,7 @@
 # Gra w statki
 
+![statki](https://user-images.githubusercontent.com/21148090/214297674-cd8cdc91-45ad-4193-b7e0-24ce0d3e65b9.gif)
+
 ## Instalacja
 ### Linux
 Zainstaluj potrzebne pakiety.
