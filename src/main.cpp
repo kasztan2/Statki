@@ -1,6 +1,7 @@
 #include "plansza.h"
 #include "menu.h"
 #include "funkcje_gry.h"
+#include "porownywarka_botow.h"
 
 int wybor_bota;
 

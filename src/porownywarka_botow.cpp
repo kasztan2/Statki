@@ -131,7 +131,7 @@ void ranking_botow(){
     Bot1 gracz1;
     Bot2 gracz2;
     Bot3 gracz3;
-    int ilosc_gier = 1000;
+    int ilosc_gier = 10000;
     vector<int> wygrane(4, 0);
     //int wygrane[4];
     for(int i = 0; i<ilosc_gier; i++){
@@ -141,6 +141,9 @@ void ranking_botow(){
         wygrane[wygrany1]++;
         wygrane[wygrany2]++;
         wygrane[wygrany3]++;
+        gracz1=*new Bot1();
+        gracz2=*new Bot2();
+        gracz3=*new Bot3();
     }
     // cout << "Na {ilosc_gier} kazdy z kazdym Bot1 wygrał {wygrane[1]} razy, Bot2 {wygrane[2]} razy, a Bot3 {wygrane[3]} razy."
     cout << wygrane[1] << " " << wygrane[2] << " " << wygrane[3] << "\n";
