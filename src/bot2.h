@@ -7,7 +7,7 @@
 #include "plansza.h"
 using std::string, std::cout, std::deque, std::to_string, std::pair, std::vector, std::queue;
 
-class Bot1{
+class Bot2{
     private:
     char statek = '#';
     char puste_pole = ' ';
@@ -136,7 +136,7 @@ class Bot1{
         }
     }
     public: 
-    Bot1(){
+    Bot2(){
         srand(time(NULL));
         for(int i = 0; i<10; i++){
             for(int j = 0; j<10; j++){

@@ -11,6 +11,7 @@ Menu::Menu(int height, int width)
     _curr_section = menu;
     start_color();
     init_colors();
+    wybor_bota=0;
 }
 
 Menu::~Menu()
@@ -153,6 +154,7 @@ void Menu::select_option()
         } else if (_curr_section == new_game) {
             _curr_section = end;
             //            wywolaj bota nr 1
+            wybor_bota=0;
         } else if (_curr_section == instructions) {
             section_return();
         }
@@ -165,6 +167,7 @@ void Menu::select_option()
         } else if (_curr_section == new_game) {
             _curr_section = end;
             //            wywolaj bota nr 2
+            wybor_bota=1;
         }
         break;
 
@@ -175,6 +178,7 @@ void Menu::select_option()
         } else if (_curr_section == new_game) {
             _curr_section = end;
             //            wywolaj bota nr 3
+            wybor_bota=2;
         }
         break;
 

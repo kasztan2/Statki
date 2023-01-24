@@ -2,6 +2,8 @@
 #include "menu.h"
 #include "funkcje_gry.h"
 
+int wybor_bota;
+
 int main()
 {
     //*MAGIA*, czyli konfiguracja biblioteki ncurses (wyłączenie kursora, kolorki itp.)

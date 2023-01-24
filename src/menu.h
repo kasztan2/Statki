@@ -11,6 +11,8 @@
 #define BLUE_BLACK 9
 #define K_ENTER 10
 
+extern int wybor_bota;
+
 enum Section {
     menu,
     new_game,
