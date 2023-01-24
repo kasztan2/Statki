@@ -43,45 +43,6 @@ for (int i = 0; i < 10; i++) {
     return false;
 }  
 
-bool is3(char tablica_bot [10][10]){
-
-for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 8; j++) {
-            if (tablica_bot[i][j] == '#' && tablica_bot[i][j+1] == '#' && tablica_bot[i][j+2] == '#' ) {
-                return true;
-            }
-        }
-    }
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 10; j++) {
-            if (tablica_bot[i][j] == '#' && tablica_bot[i+1][j] == '#' && tablica_bot[i+2][j] == '#' ) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool is2(char tablica_bot [10][10]){
-
-for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 9; j++) {
-            if (tablica_bot[i][j] == '#' && tablica_bot[i][j+1] == '#' ) {
-                return true;
-            }
-        }
-    }
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 10; j++) {
-            if (tablica_bot[i][j] == '#' && tablica_bot[i+1][j] == '#') {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-
 bool is1(char tablica_bot[10][10],int do_rysowania[10][10]){
     for(int i=0;i<10;i++){
         for(int j = 0; j<10;j++) {
@@ -174,117 +135,7 @@ for (int i=0;i<10;i++){
     }
 }   
 
-debug("aaaaaaaaaaaa");
 tablicawar [z1][z2] = -1;
-   return (z1*10+z2);
-}
-
-else if(is3(tablica_bot)){
-  for (int i=0;i<10;i++){
-    for (int j =0;j<10;j++){
-       if (do_rysowania [i][j]== 1 ||tablica_bot [i][j]== 2)
-        tablicawar [i][j] = -1;
-        z1= (10*i+2+j)/10;
-        z2= (10*i+2+j)%10;
-        if (tablicawar[z1][z2]!=-1 && 10*i+2+j<100){
-            tablicawar[z1][z2] = tablicawar [z1][z2] +1;
-        }
-        z1= (10*i-2+j)/10;
-        z2= (10*i-2+j)%10;
-        if (tablicawar[z1][z2]!=-1 && 10*i-2+j>=0){
-            tablicawar[z1][z2] = tablicawar [z1][z2] +1;
-        }
-        z1= (10*(i-2)+j)/10;
-        z2= (10*(i-2)+j)%10;
-        if (tablicawar[z1][z2]!=-1 && 10*(i-2)+j>=0){
-            tablicawar[z1][z2] = tablicawar [z1][z2] +1;
-        }
-        z1= (10*(i+2)+j)/10;
-        z2= (10*(i+2)+j)%10;
-        if (tablicawar[z1][z2]!=-1 && 10*(i+2)+j<100){
-            tablicawar[z1][z2] = tablicawar [z1][z2] +1;
-        }
-    }}
-
-  int maximum =0;
-  int ile = 0;
-    for (int i=0;i<10;i++){
-    for (int j =0;j<10;j++){
-       if (tablicawar [i][j]>=maximum)
-        maximum = tablicawar [i][j];}}
-
-    for (int i=0;i<10;i++){
-    for (int j =0;j<10;j++){
-       if (tablicawar [i][j]==maximum)
-        ile++;}}
-
-   srand(time(NULL));
-miejscestrzal = rand()%ile;
-ile =0;
-
-for (int i=0;i<10;i++){
-    for (int j =0;j<10;j++){
-       if (tablicawar [i][j]==maximum && ile<=miejscestrzal){
-        z1 = i;
-        z2 = j;
-        ile++;
-       }
-    }
-}
-   return (z1*10+z2);
-}
-else if (is2(tablica_bot)){
-   for (int i=0;i<10;i++){
-    for (int j =0;j<10;j++){
-       if (do_rysowania [i][j]== 1||do_rysowania [i][j]== 2)
-        tablicawar [i][j] = -1;
-        z1= (10*i+1+j)/10;
-        z2= (10*i+1+j)%10;
-        if (tablicawar[z1][z2]!=-1 && 10*i+1+j<100){
-            tablicawar[z1][z2] = tablicawar [z1][z2] +1;
-        }
-        z1= (10*i-1+j)/10;
-        z2= (10*i-1+j)%10;
-        if (tablicawar[z1][z2]!=-1 && 10*i-2+j>=0){
-            tablicawar[z1][z2] = tablicawar [z1][z2] +1;
-        }
-        z1= (10*(i-1)+j)/10;
-        z2= (10*(i-1)+j)%10;
-        if (tablicawar[z1][z2]!=-1 && 10*(i-2)+j>=0){
-            tablicawar[z1][z2] = tablicawar [z1][z2] +1;
-        }
-        z1= (10*(i+1)+j)/10;
-        z2= (10*(i+1)+j)%10;
-        if (tablicawar[z1][z2]!=-1 && 10*(i+2)+j<100){
-            tablicawar[z1][z2] = tablicawar [z1][z2] +1;
-        }
-    }}
-
-  int maximum =0;
-  int ile = 0;
-    for (int i=0;i<10;i++){
-    for (int j =0;j<10;j++){
-       if (tablicawar [i][j]>=maximum)
-        maximum = tablicawar [i][j];}}
-
-    for (int i=0;i<10;i++){
-    for (int j =0;j<10;j++){
-       if (tablicawar [i][j]==maximum)
-        ile++;}}
-
-   srand(time(NULL));
-miejscestrzal = rand()%ile;
-ile =0;
-
-for (int i=0;i<10;i++){
-    for (int j =0;j<10;j++){
-       if (tablicawar [i][j]==maximum && ile<=miejscestrzal){
-        z1 = i;
-        z2 = j;
-        ile++;
-       }
-    }
-}
    return (z1*10+z2);
 }
 else {
@@ -313,6 +164,7 @@ for (int i=0;i<10;i++){
        }
     }
 }
+tablicawar [z1][z2] = -1;
    return (z1*10+z2);
 }
 }
@@ -376,7 +228,7 @@ if (tablica_bot [x][y]== '#'){
         tablicawar [x-1][y+1] = -1;}
 
               if((x+1)<10 && (y-1)>0){
-        do_rysowania [x+1][y-1] = 2;}
+        tablicawar [x+1][y-1] = -1;}
 
         if (x+1<10 && tablicawar [x+1][y]!=-1){tablicawar [x+1][y] =(tablicawar [x+1][y]+1)*2;}
         if (x-1 >=0 && tablicawar [x-1][y]!= -1){tablicawar [x-1][y] =(tablicawar [x-1][y]+1)*2;}
